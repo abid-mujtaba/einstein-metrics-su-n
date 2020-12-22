@@ -9,7 +9,7 @@ traceless.
 import sympy as sp
 import sympy.diffgeom as dg
 
-from typing import Tuple
+from typing import Literal, Tuple
 
 
 class L(dg.Differential):
@@ -52,6 +52,20 @@ class L(dg.Differential):
         return self.index_1 < other.index_1 or (
             self.index_1 == other.index_1 and self.index_2 < other.index_2
         )
+
+    def compare(self, other: object) -> Literal[-1, 0, 1]:
+        """sympy makes heavy use of the compare method when organizing expressions."""
+        if not isinstance(other, L):
+            return NotImplemented
+
+        if self < other:
+            return -1
+
+        if self == other:
+            return 0
+
+        return 1
+
 
     _unicode_subscripts = ("₀", "₁", "₂", "₃", "₄", "₅", "₆", "₇", "₈", "₉")
     _unicode_superscripts = ("⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹")
