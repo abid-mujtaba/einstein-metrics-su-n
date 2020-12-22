@@ -37,6 +37,10 @@ class L(dg.Differential):
 
         return obj
 
+    def _hashable_content(self):
+        """The hashable (identifying) content of the L 1-form, mainly its indices."""
+        return (self.index_1, self.index_2)
+
     def __eq__(self, other: object) -> bool:
         """Two L 1-forms are considered equal ONLY if they have same indices."""
         if not isinstance(other, L):
