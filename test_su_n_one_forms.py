@@ -38,3 +38,22 @@ def test_L_1_form_representation_higher_numbers():
     # THEN
     assert repr(l_13_17) == "L_13^17"
     assert str(l_13_17) == "L_13^17"
+
+
+def test_create_su_n_L_1_forms():
+    """Creates a 2-array of the n² L 1-forms for SU(n)."""
+    # GIVEN
+    n = 3
+
+    # WHEN
+    L = sut.create_su_n_L_1_forms(n)
+
+    # THEN
+    assert len(L) == 3
+
+    for i in range(3):
+        assert len(L[i]) == 3
+
+    for i in range(3):
+        for j in range(3):
+            assert isinstance(L[i][j], dg.Differential)
