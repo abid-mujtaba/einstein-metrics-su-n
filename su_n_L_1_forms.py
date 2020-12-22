@@ -48,28 +48,6 @@ class L(dg.Differential):
 
         return self.index_1 == other.index_1 and self.index_2 == other.index_2
 
-    def __lt__(self, other: object) -> bool:
-        """An L 1-form is < another based on first and then second index."""
-        if not isinstance(other, L):
-            return NotImplemented
-
-        return self.index_1 < other.index_1 or (
-            self.index_1 == other.index_1 and self.index_2 < other.index_2
-        )
-
-    def compare(self, other: object) -> Literal[-1, 0, 1]:
-        """sympy makes heavy use of the compare method when organizing expressions."""
-        if not isinstance(other, L):
-            return NotImplemented
-
-        if self < other:
-            return -1
-
-        if self == other:
-            return 0
-
-        return 1
-
 
     _unicode_subscripts = ("₀", "₁", "₂", "₃", "₄", "₅", "₆", "₇", "₈", "₉")
     _unicode_superscripts = ("⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹")
@@ -101,8 +79,12 @@ class L(dg.Differential):
         return self.__repr__()
 
     def __hash__(self):
-        """Use the representation of the L 1-form since it is complete."""
-        return hash(repr(self))
+        """
+        Unique hash based on indices.
+
+        We use _hashable_contents() to calculate the has so that they remain in sync.
+        """
+        return hash(self._hashable_content())
 
 
 typeL = Tuple[Tuple[L, ...], ...]
