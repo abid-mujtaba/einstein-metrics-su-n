@@ -37,6 +37,14 @@ class L(dg.Differential):
 
         return obj
 
+    def __eq__(self, other: object) -> bool:
+        """Two L 1-forms are considered equal ONLY if they have same indices."""
+        if not isinstance(other, L):
+            return NotImplemented
+
+        return self.index_1 == other.index_1 and self.index_2 == other.index_2
+
+
     _unicode_subscripts = ("₀", "₁", "₂", "₃", "₄", "₅", "₆", "₇", "₈", "₉")
     _unicode_superscripts = ("⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹")
 
