@@ -77,3 +77,18 @@ def test_create_su_n_L_1_forms():
     for i in range(3):
         for j in range(3):
             assert isinstance(L[i][j], dg.Differential)
+
+
+def test_create_su_n_K_1_forms():
+    """Use Scheme 1 to create K 1-forms given a set of L 1-forms."""
+    # GIVEN
+    n = 3
+    L = sut.create_su_n_L_1_forms(n)
+
+    # WHEN
+    K = sut.create_su_n_K_1_forms(L)
+
+    # THEN
+    # assert len(K) == n**2
+
+    assert K[0] == sut.L(0,1) + sut.L(1,0)
