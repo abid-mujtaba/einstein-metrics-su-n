@@ -96,6 +96,22 @@ def test_L_1_form_ordering():
     assert not a < a
 
 
+def test_L_1_form_compare():
+    """Test the compare method for the 1-forms."""
+    # GIVEN
+    a = sut.L(1,2)
+    b = sut.L(1,3)
+    c = sut.L(2,1)
+
+    # THEN
+    assert a.compare(a) == 0
+    assert a.compare(b) == -1
+    assert b.compare(a) == 1
+
+    assert a.compare(c) == -1
+    assert c.compare(a) == 1
+
+
 def test_create_su_n_L_1_forms():
     """Creates a 2-array of the n² L 1-forms for SU(n)."""
     # GIVEN
