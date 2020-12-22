@@ -28,3 +28,13 @@ def test_L_1_form_representation():
     # THEN
     assert repr(l_12) == "L₁²"
     assert str(l_12) == "L₁²"
+
+
+def test_L_1_form_representation_higher_numbers():
+    """Representation moves away from unicode for higher numbers."""
+    # WHEN
+    l_13_17 = sut.L(13, 17)
+
+    # THEN
+    assert repr(l_13_17) == "L_13^17"
+    assert str(l_13_17) == "L_13^17"
