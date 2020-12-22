@@ -18,3 +18,13 @@ def test_creation_of_L_1_forms():
 
     # Applying a Differential twice should result in 0
     assert dg.Differential(l_12) == 0
+
+
+def test_L_1_form_representation():
+    """Should be represented with the indices correctly lowered and raised."""
+    # WHEN
+    l_12 = sut.L(1,2)
+
+    # THEN
+    assert repr(l_12) == "L₁²"
+    assert str(l_12) == "L₁²"
