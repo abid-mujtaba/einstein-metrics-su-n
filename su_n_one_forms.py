@@ -9,18 +9,21 @@ traceless.
 import sympy as sp
 import sympy.diffgeom as dg
 
+from typing import Tuple
+
 
 class L(dg.Differential):
     """
     L_A^B 1-forms for SU(n).
 
-    These are Hermitian but not traceless. They in fact correspond to each element in
-    an SU(n) matrix in that A, B ∊ 𝕫^n and correspond to the element in the A-th row
-    and B-th column of an SU(n) matrix.
+    These are neither Hermitian nor traceless. They in fact correspond to
+    each element in an SU(n) matrix in that A, B ∊ 𝕫^n and
+    correspond to the element in the A-th row and B-th column of an SU(n) matrix.
 
     They are based on a `None` form_field which means that
     most methods of the Differential form will **not** work.
     """
+
     def __new__(cls, index_1: int, index_2: int):
         """
         Create a new L_A^B object which is a sub-class of dg.Differential.
@@ -34,8 +37,7 @@ class L(dg.Differential):
 
         return obj
 
-
-    _unicode_subscripts =   ("₀", "₁", "₂", "₃", "₄", "₅", "₆", "₇", "₈", "₉")
+    _unicode_subscripts = ("₀", "₁", "₂", "₃", "₄", "₅", "₆", "₇", "₈", "₉")
     _unicode_superscripts = ("⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹")
 
     @classmethod
@@ -56,8 +58,15 @@ class L(dg.Differential):
 
     def __repr__(self):
         """Represent the L 1-form in its classic subscript+superscript form."""
-        return f"L{self._get_subscript(self.index_1)}{self._get_superscript(self.index_2)}"
+        return (
+            f"L{self._get_subscript(self.index_1)}{self._get_superscript(self.index_2)}"
+        )
 
     def __str__(self):
         """Falls back on __repr__."""
         return self.__repr__()
+
+
+def create_su_n_L_1_forms(n: int) -> Tuple[Tuple[L, ...], ...]:
+    """Create the 2-array of the n² L 1-forms for SU(n)."""
+    return tuple(tuple(L(i, j) for j in range(n)) for i in range(n))
