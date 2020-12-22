@@ -74,6 +74,10 @@ class L(dg.Differential):
         """Falls back on __repr__."""
         return self.__repr__()
 
+    def __hash__(self):
+        """Use the representation of the L 1-form since it is complete."""
+        return hash(repr(self))
+
 
 def create_su_n_L_1_forms(n: int) -> Tuple[Tuple[L, ...], ...]:
     """Create the 2-array of the n² L 1-forms for SU(n)."""

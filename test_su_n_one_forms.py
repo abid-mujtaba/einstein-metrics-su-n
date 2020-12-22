@@ -42,7 +42,7 @@ def test_L_1_form_representation_higher_numbers():
 
 def test_L_1_form_equality():
     """Equal only when they have the same indices."""
-    # Given
+    # GIVEN
     a = sut.L(1,2)
     b = sut.L(1,2)
 
@@ -52,12 +52,32 @@ def test_L_1_form_equality():
 
 def test_L_1_form_inequality():
     """Equal only when they have the same indices."""
-    # Given
+    # GIVEN
     a = sut.L(1,2)
     b = sut.L(2,3)
 
     # THEN
     assert a != b
+
+
+def test_L_1_form_hash_equality():
+    """Equal L 1-forms have the same hash."""
+    # GIVEN
+    a = sut.L(1,2)
+    b = sut.L(1,2)
+
+    # THEN
+    assert hash(a) == hash(b)
+
+
+def test_L_1_form_hash_inequality():
+    """Equal L 1-forms have the same hash."""
+    # GIVEN
+    a = sut.L(1,2)
+    b = sut.L(2,3)
+
+    # THEN
+    assert hash(a) != hash(b)
 
 
 def test_create_su_n_L_1_forms():
