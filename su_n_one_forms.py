@@ -33,3 +33,31 @@ class L(dg.Differential):
         obj.index_2 = index_2
 
         return obj
+
+
+    _unicode_subscripts =   ("₀", "₁", "₂", "₃", "₄", "₅", "₆", "₇", "₈", "₉")
+    _unicode_superscripts = ("⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹")
+
+    @classmethod
+    def _get_subscript(cls, index):
+        try:
+            return cls._unicode_subscripts[index]
+
+        except IndexError:  # If index is out of range use it without unicode
+            return f"_{index}"
+
+    @classmethod
+    def _get_superscript(cls, index):
+        try:
+            return cls._unicode_superscripts[index]
+
+        except IndexError:
+            return f"^{index}"
+
+    def __repr__(self):
+        """Represent the L 1-form in its classic subscript+superscript form."""
+        return f"L{self._get_subscript(self.index_1)}{self._get_superscript(self.index_2)}"
+
+    def __str__(self):
+        """Falls back on __repr__."""
+        return self.__repr__()
