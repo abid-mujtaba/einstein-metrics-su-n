@@ -40,6 +40,26 @@ def test_L_1_form_representation_higher_numbers():
     assert str(l_13_17) == "L_13^17"
 
 
+def test_L_1_form_equality():
+    """Equal only when they have the same indices."""
+    # Given
+    a = sut.L(1,2)
+    b = sut.L(1,2)
+
+    # THEN
+    assert a == b
+
+
+def test_L_1_form_inequality():
+    """Equal only when they have the same indices."""
+    # Given
+    a = sut.L(1,2)
+    b = sut.L(2,3)
+
+    # THEN
+    assert a != b
+
+
 def test_create_su_n_L_1_forms():
     """Creates a 2-array of the n² L 1-forms for SU(n)."""
     # GIVEN
