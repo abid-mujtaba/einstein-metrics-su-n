@@ -28,7 +28,8 @@ class L(dg.Differential):
         """
         Create a new L_A^B object which is a sub-class of dg.Differential.
 
-        :param index_1:
+        :param index_1: The first index of the 1-form (between 0 and (n-1))
+        :param index_2: The second index of the 1-form (between 0 and (n-1))
         """
         obj = dg.Differential.__new__(cls, None)
 
