@@ -1,7 +1,7 @@
 """Test the su_n_one_forms module."""
 
 import sympy.diffgeom as dg
-import su_n_L_1_forms as sut
+import L_1_forms as sut
 
 
 def test_creation_of_L_1_forms():
@@ -80,13 +80,13 @@ def test_L_1_form_hash_inequality():
     assert hash(a) != hash(b)
 
 
-def test_create_su_n_L_1_forms():
+def test_create_L_1_forms():
     """Creates a 2-array of the n² L 1-forms for SU(n)."""
     # GIVEN
     n = 3
 
     # WHEN
-    L = sut.create_su_n_L_1_forms(n)
+    L = sut.create_L_1_forms(n)
 
     # THEN
     assert len(L) == 3

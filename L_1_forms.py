@@ -89,6 +89,6 @@ class L(dg.Differential):
 
 typeL = Tuple[Tuple[L, ...], ...]
 
-def create_su_n_L_1_forms(n: int) -> typeL:
+def create_L_1_forms(n: int) -> typeL:
     """Create the 2-array of the n² L 1-forms for SU(n)."""
     return tuple(tuple(L(i, j) for j in range(n)) for i in range(n))
