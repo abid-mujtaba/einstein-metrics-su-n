@@ -36,6 +36,10 @@ class L(dg.Differential):
         obj.index_1 = index_1
         obj.index_2 = index_2
 
+        obj._args = tuple()  # By definition the L 1-forms do not have expressions
+                             # inside. .args is a property so have to override the
+                             # underlying _args attribute
+
         return obj
 
     @property

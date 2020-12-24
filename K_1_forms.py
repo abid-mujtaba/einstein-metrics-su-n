@@ -23,6 +23,7 @@ class K(dg.Differential):
         """
         obj = dg.Differential.__new__(cls, None)
         obj.index = index
+        obj._args = tuple()
         return obj
 
     @property
