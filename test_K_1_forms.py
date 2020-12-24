@@ -61,12 +61,15 @@ def test_K_1_form_inequality():
 
 def test_addition():
     """Good test of sympy functionality, ability to add to create a new expression."""
-    # WHEN
+    # GIVEN
     k_3 = sut.K(3)
     k_7 = sut.K(7)
 
+    # WHEN
+    expr = k_3 + k_7
+
     # THEN
-    k_3 + k_7
+    assert str(expr) == "K₃ + K₇"
 
 
 # def test_create_K_1_forms():
