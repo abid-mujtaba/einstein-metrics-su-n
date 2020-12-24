@@ -80,6 +80,19 @@ def test_L_1_form_hash_inequality():
     assert hash(a) != hash(b)
 
 
+def test_addition():
+    """Good test of sympy functionality, ability to add to create a new expression."""
+    # GIVEN
+    a = sut.L(1,2)
+    b = sut.L(2,3)
+
+    # WHEN
+    expr = a + b
+
+    # THEN
+    assert str(expr) == "L₁² + L₂³"
+
+
 def test_create_L_1_forms():
     """Creates a 2-array of the n² L 1-forms for SU(n)."""
     # GIVEN
