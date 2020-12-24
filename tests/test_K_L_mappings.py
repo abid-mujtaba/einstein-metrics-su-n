@@ -9,6 +9,7 @@ from sympy.matrices import Matrix
 import K_L_mappings as sut
 
 from L_1_forms import L
+from utilities import is_in_expr
 
 
 def test_category_1_K2L():
@@ -111,3 +112,19 @@ def test_Q_matrix():
     assert row_1.dot(row_n) == 0
 
     assert row_n.dot(row_n) == 1
+
+
+def test_category_3_K2L():
+    """Test the creation of the category 3 K2L mappings (uses the P qnd Q matrices)."""
+    # GIVEN
+    n = 4
+
+    # WHEN
+    K2L = tuple(sut._category_3_K2L(n))
+
+    # THEN
+    assert len(K2L) == n
+
+    # Each entry (K 1-form) must have contributions from all the diagonal L 1-forms
+    for i, j in zip(range(n), range(n)):
+        assert is_in_expr(L(i,i), K2L[j])

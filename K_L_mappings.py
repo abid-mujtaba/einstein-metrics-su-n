@@ -69,5 +69,19 @@ def _create_Q_matrix(n: int) -> Matrix:
     )
 
 
+def _category_3_K2L(n: int):
+    """Create the category 3 K2L mappings."""
+    # Create a columns vector from the L 1-forms which is used in the matrix based
+    # creation of the mapping to K 1-forms
+    l = Matrix([[L(i, i) for i in range(n)]]).T
+
+    P = _create_P_matrix(n)
+    Q = _create_Q_matrix(n)
+
+    k = P * Q * l
+
+    return (k[i] for i in range(n))
+
+
 def create_K2L(n: int):
     """Create mappings from the K to the L 1-forms for SU(n)."""
