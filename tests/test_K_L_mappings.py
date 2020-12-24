@@ -1,5 +1,7 @@
 """Test the K to L mappings defined in K_L_mappings.py."""
 
+import pytest
+
 from sympy import I, Rational
 from sympy.matrices import Matrix
 
@@ -43,13 +45,26 @@ def test_category_2_K2L():
 def test_P_matrix():
     """Test the creation of the P matrix used to create the category 3 mappings."""
     # GIVEN
-    n = 3
+    n = 4
 
     # WHEN
-    P = sut.create_P_matrix(n)
+    P = sut._create_P_matrix(n)
 
     # THEN
     assert isinstance(P, Matrix)
     assert P.shape == (n, n)
+
+    # Diagnoal entries must equal 2/(n - 1) - 1 (except for the last)
+    assert P[0,0] == Rational(2, n - 1) - 1
+    assert float(P[0, 0]) == pytest.approx(-0.33333333)
+
+    # Off-diagnoal entries must equal 2/(n - 1) (except for the last row and col)
     assert P[0, 1] == Rational(2, n - 1)
-    assert float(P[0, 1]) == 1.0
+    assert float(P[0, 1]) == pytest.approx(0.666666667)
+
+    # Last row and column must have zeros (except for the last diagonal entry)
+    assert P[0,3] == 0
+    assert P[3,0] == 0
+
+    # Last diagonal entry must equal 1
+    assert P[3,3] == 1
