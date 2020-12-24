@@ -68,3 +68,10 @@ def test_P_matrix():
 
     # Last diagonal entry must equal 1
     assert P[3,3] == 1
+
+    # Test orthonormality of the rows of the P matrix
+    row_1 = P[0,:]
+    row_2 = P[1,:]
+
+    assert row_1.dot(row_1) == 1
+    assert row_1.dot(row_2) == 0
