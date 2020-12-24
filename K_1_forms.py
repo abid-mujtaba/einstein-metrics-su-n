@@ -25,6 +25,11 @@ class K(dg.Differential):
         obj.index = index
         return obj
 
+    @property
+    def is_number(self):
+        """Used by sympy to process expressions."""
+        return False
+
     def _hashable_content(self):
         """The hashable (identifying) content of the K 1-form, mainly its index."""
         return (self.index,)
@@ -44,13 +49,17 @@ class K(dg.Differential):
         """Convert an integer to a subscript unicode string."""
         return "".join(cls._unicode_subscripts[int(_)] for _ in str(index))
 
-    def __repr__(self):
-        """Represent the K 1-form in its classic K_{index} form."""
+    def __str__(self):
+        """Print the K 1-form in its classic K_{index} form."""
         return f"K{self._index_to_unicode(self.index)}"
 
-    def __str__(self):
-        """Same as repr."""
-        return self.__repr__()
+    def __repr__(self):
+        """Same as str."""
+        return self.__str__()
+
+    def _sympystr(self, printer, *args):
+        """Sympy method used when string-type printing an expression."""
+        return self.__str__()
 
     def __hash__(self):
         """Unique hash based on _hashable_contents(), mainly index."""
