@@ -38,6 +38,11 @@ class L(dg.Differential):
 
         return obj
 
+    @property
+    def is_number(self):
+        """Used by sympy to process expressions."""
+        return False
+
     def _hashable_content(self):
         """The hashable (identifying) content of the L 1-form, mainly its indices."""
         return (self.index_1, self.index_2)
@@ -69,15 +74,19 @@ class L(dg.Differential):
         except IndexError:
             return f"^{index}"
 
-    def __repr__(self):
-        """Represent the L 1-form in its classic subscript+superscript form."""
+    def __str__(self):
+        """Print the L 1-form in its classic subscript+superscript form."""
         return (
             f"L{self._get_subscript(self.index_1)}{self._get_superscript(self.index_2)}"
         )
 
-    def __str__(self):
-        """Falls back on __repr__."""
-        return self.__repr__()
+    def __repr__(self):
+        """Falls back on __str__."""
+        return self.__str__()
+
+    def _sympystr(self, printer, *args):
+        """Sympy method used when string-type printing an expression."""
+        return self.__str__()
 
     def __hash__(self):
         """
