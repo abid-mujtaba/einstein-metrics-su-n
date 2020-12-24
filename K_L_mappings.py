@@ -19,20 +19,26 @@ def _category_2_K2L(n: int):
 
 
 def _create_P_matrix(n: int) -> Matrix:
-    """Create P matrix used to mix L 1-forms while creating the category 3 K 1-forms."""
-    factor = Rational(2, n - 1)
-    P = factor * ones(n)
+    """
+    Create P matrix used to mix L 1-forms while creating the category 3 K 1-forms.
 
-    # Deal with exceptional cases
-    # Modify diagonal and last row and last col entries
-    for i in range(n):
-        P[i, i] = factor - 1
-        P[i, n - 1] = 0
-        P[n - 1, i] = 0
+    For N defined equal to (n - 1),
+    the P matrix is block diagonal with a large (n - 1) * (n - 1) first entry
+    and a single 1 in the last diagonal element
 
-    P[n - 1, n - 1] = 1
+    The initial sub-matrix can be defined in Einstein notation as
+    2 / N - delta_i,j
+    where delta_i,j is the Kroneker delta.
 
-    return P
+    Both the structure of the larger matrix (block diagonal) and
+    the sub-matrix can be defined in a straight-forward fashion using sympy's
+    built in matrix utility functions.
+    """
+    N = n - 1
+    sub_matrix = (Rational(2, N) * ones(N)) - eye(N)
+
+    return diag(sub_matrix, 1)
+
 
 def create_K2L(n: int):
     """Create mappings from the K to the L 1-forms for SU(n)."""
