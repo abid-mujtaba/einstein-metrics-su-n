@@ -3,6 +3,7 @@
 import pytest
 
 from sympy import I, Rational
+from sympy.functions import sqrt
 from sympy.matrices import Matrix
 
 import K_L_mappings as sut
@@ -75,3 +76,38 @@ def test_P_matrix():
 
     assert row_1.dot(row_1) == 1
     assert row_1.dot(row_2) == 0
+
+
+def test_Q_matrix():
+    """Test the Q matrix used for mapping the category 3 K 1-forms to diag L 1-forms."""
+    # GIVEN
+    n = 4
+
+    # WHEN
+    Q = sut._create_Q_matrix(n)
+
+    # THEN
+    assert isinstance(Q, Matrix)
+    assert Q.shape == (n, n)
+
+    assert Q[0,0] == 1 / sqrt(2)
+    assert Q[0,1] == - 1 / sqrt(2)
+    assert Q[0,2] == 0
+
+    assert Q[1,0] == 1 / sqrt(6)
+    assert Q[1,2] == - 2 / sqrt(6)
+    assert Q[1,3] == 0
+
+    assert Q[n - 1, 0] == 1 / sqrt(n)
+    assert Q[n - 1, n - 1] == 1 / sqrt(n)
+
+    # Verify orthonormality of the rows of Q
+    row_1 = Q[0, :]
+    row_2 = Q[1, :]
+    row_n = Q[n - 1, :]
+
+    assert row_1.dot(row_1) == 1
+    assert row_1.dot(row_2) == 0
+    assert row_1.dot(row_n) == 0
+
+    assert row_n.dot(row_n) == 1
