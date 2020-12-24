@@ -1,4 +1,8 @@
+# VS Code config
 .vscode/
+.python.env
+
+# Testing and Linting
 __pycache__/
 .mypy_cache/
 .pytest_cache/
