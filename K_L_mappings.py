@@ -85,3 +85,8 @@ def _category_3_K2L(n: int):
 
 def create_K2L(n: int):
     """Create mappings from the K to the L 1-forms for SU(n)."""
+    return [
+        *_category_1_K2L(n),
+        *_category_2_K2L(n),
+        *_category_3_K2L(n)
+    ]

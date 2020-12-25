@@ -128,3 +128,15 @@ def test_category_3_K2L():
     # Each entry (K 1-form) must have contributions from all the diagonal L 1-forms
     for i, j in zip(range(n), range(n)):
         assert is_in_expr(L(i,i), K2L[j])
+
+
+def test_create_K2L():
+    """Test creation of complete K2L mapping."""
+    # GIVEN
+    n = 4
+
+    # WHEN
+    K2L = sut.create_K2L(n)
+
+    # THEN
+    assert len(K2L) == n**2
