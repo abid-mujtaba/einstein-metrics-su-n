@@ -22,21 +22,32 @@ class L(sp.Expr):
 
     def __new__(cls, index_1: int, index_2: int):
         """
-        Create a new L_A^B object which is a sub-class of dg.Differential.
+        Create a new L_A^B object which is a sub-class of sp.Expr.
 
         :param index_1: The first index of the 1-form (between 0 and (n-1))
         :param index_2: The second index of the 1-form (between 0 and (n-1))
         """
         obj = sp.Expr.__new__(cls)
 
-        obj.index_1 = index_1
-        obj.index_2 = index_2
-
         obj._args = tuple()  # By definition the L 1-forms do not have expressions
                              # inside. .args is a property so have to override the
                              # underlying _args attribute
 
         return obj
+
+
+    __slots__ = ("index_1", "index_2")
+
+    def __init__(self, index_1: int, index_2: int):
+        """
+        Create a new L_{index_1}^{index_2} object.Expr.
+
+        :param index_1: The first index of the 1-form (between 0 and (n-1))
+        :param index_2: The second index of the 1-form (between 0 and (n-1))
+        """
+        self.index_1 = index_1
+        self.index_2 = index_2
+
 
     @property
     def is_number(self):

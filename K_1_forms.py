@@ -13,18 +13,23 @@ class K(sp.Expr):
     The are (n²-1) in number.
     """
 
-    # __slots__ = ("index", *sp.Basic.__slots__)
-
     def __new__(cls, index: int):
-        """
-        Create a new K_i 1-form which is a sub-class of dg.Differential.
-
-        :param index: The index of the 1-form between 0 and (n² - 2)
-        """
+        """Create a new K_i 1-form which is a sub-class of sp.Expr."""
         obj = sp.Expr.__new__(cls)
-        obj.index = index
         obj._args = tuple()
         return obj
+
+
+    __slots__ = ("index",)
+
+    def __init__(self, index: int):
+        """
+        Create a new K_{index} 1-form.
+
+        :param index: The index of the 1-form between 0 and (n² - 1)
+        """
+        self.index = index
+
 
     @property
     def is_number(self):
