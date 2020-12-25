@@ -79,6 +79,21 @@ def test_L_1_form_hash_inequality():
     assert hash(a) != hash(b)
 
 
+def test_L_1_form_ordering():
+    """L 1-forms are ordered based on the 2 indices, the first one first."""
+    # GIVEN
+    l_12 = sut.L(1, 2)
+    l_13 = sut.L(1, 3)
+    l_21 = sut.L(2, 1)
+
+    # THEN
+    assert l_12 < l_13
+    assert l_13 > l_12
+
+    assert l_12 < l_21
+    assert l_21 > l_12
+
+
 def test_addition():
     """Good test of sympy functionality, ability to add to create a new expression."""
     # GIVEN

@@ -65,6 +65,29 @@ class L(sp.Expr):
 
         return self.index_1 == other.index_1 and self.index_2 == other.index_2
 
+    def __lt__(self, other: object) -> bool:
+        """One L 1-form is considered < another based on the indices."""
+        if not isinstance(other, L):
+            return NotImplemented
+
+        if self.index_1 < other.index_1:
+            return True
+
+        if self.index_1 > other.index_1:
+            return False
+
+        return self.index_2 < other.index_2
+
+    def __gt__(self, other: object) -> bool:
+        """One L 1-form is considered > another based on the indices."""
+        if not isinstance(other, L):
+            return NotImplemented
+
+        if self == other:
+            return False
+
+        return not (self < other)
+
 
     _unicode_subscripts = ("₀", "₁", "₂", "₃", "₄", "₅", "₆", "₇", "₈", "₉")
     _unicode_superscripts = ("⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹")
