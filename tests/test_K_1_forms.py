@@ -58,6 +58,17 @@ def test_K_1_form_inequality():
     assert hash(a) != hash(b)
 
 
+def test_K_1_form_ordering():
+    """Ordering is based on indices."""
+    # GIVEN
+    k_3 = sut.K(3)
+    k_7 = sut.K(7)
+
+    # THEN
+    assert k_3 < k_7
+    assert k_7 > k_3
+
+
 def test_addition():
     """Good test of sympy functionality, ability to add to create a new expression."""
     # GIVEN
@@ -69,18 +80,3 @@ def test_addition():
 
     # THEN
     assert str(expr) == "K₃ + K₇"
-
-
-# def test_create_K_1_forms():
-#     """Use Scheme 1 to create K 1-forms given a set of L 1-forms."""
-#     # GIVEN
-#     n = 3
-#     L = L_1_forms.create_L_1_forms(n)
-
-#     # WHEN
-#     K = sut.create_K_1_forms(L)
-
-#     # THEN
-#     # assert len(K) == n**2
-
-#     assert K[0] == createL(0,1) + createL(1,0)

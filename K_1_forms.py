@@ -2,8 +2,6 @@
 
 import sympy as sp
 
-from typing import Tuple
-
 
 class K(sp.Expr):
     """
@@ -47,6 +45,20 @@ class K(sp.Expr):
 
         return self.index == other.index
 
+    def __lt__(self, other: object) -> bool:
+        """A K 1-form is considered < another ONLY if the first has a lower index."""
+        if not isinstance(other, K):
+            return NotImplemented
+
+        return self.index < other.index
+
+    def __gt__(self, other: object) -> bool:
+        """A K 1-form is considered > another ONLY if the first has a larger index."""
+        if not isinstance(other, K):
+            return NotImplemented
+
+        return self.index > other.index
+
 
     _unicode_subscripts = ("₀", "₁", "₂", "₃", "₄", "₅", "₆", "₇", "₈", "₉")
 
@@ -70,17 +82,3 @@ class K(sp.Expr):
     def __hash__(self):
         """Unique hash based on _hashable_contents(), mainly index."""
         return hash(self._hashable_content())
-
-
-
-# The K 1-forms are returned as a tuple of expressions (sums of L 1-forms)
-typeK = Tuple[sp.Expr, ...]
-
-
-# def create_K_1_forms(L: typeL) -> typeK:
-#     """Create the 1-array of n² K 1-forms for SU(n)."""
-#     n = len(L)
-
-#     class_1 = (L[i][j] + L[j][i] for i in range(n) for j in range(n) if i != j)
-
-#     return tuple(class_1)
