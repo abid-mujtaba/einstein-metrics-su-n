@@ -19,27 +19,27 @@ def test_L2K_a_less_b():
     result = sut._L2K_a_less_b(a, b, n)
 
     # THEN
-    assert is_in_expr(K(6), result)
-    assert is_in_expr(K(12), result)
+    assert is_in_expr(K(3), result)
+    assert is_in_expr(K(9), result)
 
-    assert result == K(6) / 2 - I * K(12) / 2
+    assert result == K(3) / 2 - I * K(9) / 2
 
 
 def test_L2K_a_more_b():
     """Test the calculation for L^a_b when a < b."""
     # GIVEN
     n = 4
-    a = 1
-    b = 2
+    a = 2
+    b = 1
 
     # WHEN
     result = sut._L2K_a_more_b(a, b, n)
 
     # THEN
-    assert is_in_expr(K(6), result)
-    assert is_in_expr(K(12), result)
+    assert is_in_expr(K(3), result)
+    assert is_in_expr(K(9), result)
 
-    assert result == K(6) / 2 + I * K(12) / 2
+    assert result == K(3) / 2 + I * K(9) / 2
 
 
 def test_L_diag_mappings():
