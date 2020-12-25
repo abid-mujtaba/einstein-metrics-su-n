@@ -11,13 +11,14 @@ from sympy.matrices import Matrix
 from K_1_forms import K
 from K_L_mappings import _create_P_matrix, _create_Q_matrix
 
+
 def _index_from_pair(a: int, b: int, n: int):
     """Calculate the K 1-form index from the L 1-form pair (a, b)."""
     # Since itertools.combinations is used to construct the K 1-forms we
     # use it to invert the relationship
     map = {pair: i for i, pair in enumerate(itertools.combinations(range(n), 2))}
 
-    return map[(a,b)]
+    return map[(a, b)]
 
 
 def _L2K_a_less_b(a: int, b: int, n: int) -> Expr:
@@ -56,8 +57,7 @@ def _L_diag_mappings(n: int):
     # Create a column vector of the K 1-forms that correspond to the category 3
     # mappings to the diagonal L 1-forms.
     # These are the LAST n entries
-    indices = [n ** 2 - i for i in range(n)]
-    indices.reverse()
+    indices = [n ** 2 - i for i in range(n, 0, -1)]
 
     k = Matrix([[K(i) for i in indices]]).T
 
