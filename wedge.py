@@ -13,10 +13,15 @@ class Wedge(Expr):
         assert len(args) == 2
         op1, op2 = args
 
-        if op1 == op2:  # Wedge product of an element with itself is zero by definition
+        if op1 < op2:
+            obj = Expr.__new__(cls, *args)
+
+        elif op1 == op2:  # Wedge product of an element with itself is zero by definition
             return 0
 
-        obj = Expr.__new__(cls, *args)
+        else:  # If op2 > op1 we reverse the order and multiply by -1 to implement
+               # antisymmetry at construction
+            obj = -1 * Wedge(op2, op1)
 
         return obj
 
