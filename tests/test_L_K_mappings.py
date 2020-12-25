@@ -1,5 +1,6 @@
 """Test the L2K mappings module."""
 
+from itertools import product
 from sympy import I, expand, collect, simplify
 
 import L_K_mappings as sut
@@ -124,3 +125,21 @@ def test_mapping_inverstion_diagonal():
     assert is_in_expr(l_3_3, k_15)
 
     assert expand(k_15_inverted) == K(15)
+
+
+def test_mapping_inversion_complete():
+    """Map all K 1-forms to L 1-forms and back to verify mappings completely."""
+    # GIVEN
+    n = 4
+    K2L = create_K2L(n)
+    L2K = sut.create_L2K(n)
+
+    k = [K2L[i] for i in range(n**2)]
+    maps = {L(i,j): L2K[i][j] for i, j in product(range(n), repeat=2)}
+
+    # WHEN
+    k_inv = [e.subs(maps) for e in k]
+
+    # THEN
+    for i in range(n**2):
+        assert expand(k_inv[i]) == K(i)
