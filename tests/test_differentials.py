@@ -20,3 +20,15 @@ def test_dL():
 
     # THEN
     assert result == I * (Wedge(L(1,0), L(0,2)) + Wedge(L(1,1), L(1,2)) + Wedge(L(1,2), L(2,2)))
+
+
+def test_create_dK():
+    """Test the creation of the dK expressions."""
+    # GIVEN
+    n = 2
+
+    # WHEN
+    dK = sut.create_dK(n)
+
+    # THEN
+    assert len(dK) == n**2
