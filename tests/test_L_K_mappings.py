@@ -4,7 +4,9 @@ from sympy import I
 
 import L_K_mappings as sut
 
+from L_1_forms import L
 from K_1_forms import K
+from K_L_mappings import create_K2L
 from utilities import is_in_expr
 
 
@@ -54,7 +56,7 @@ def test_L_diag_mappings():
     assert len(L_diag) == n
 
     for i, j in zip(range(n), range(n)):
-        assert is_in_expr(K(n**2 - i), L_diag[j])
+        assert is_in_expr(K(n ** 2 - i), L_diag[j])
 
 
 def test_create_L2K():
@@ -67,4 +69,27 @@ def test_create_L2K():
 
     # THEN
     assert len(L2K) == n
-    for i in range(n): assert len(L2K[i]) == n
+    for i in range(n):
+        assert len(L2K[i]) == n
+
+
+def test_mapping_inversion_off_diagonal():
+    """Map a K 1-form to the off-diagonal L 1-forms and back to confirm mappings."""
+    # GIVEN
+    n = 4
+    K2L = create_K2L(n)
+    L2K = sut.create_L2K(n)
+
+    k_0 = K2L[0]  # the first K 1-form mapped to L 1-forms
+
+    l_0_1 = L(0, 1)
+    l_1_0 = L(1, 0)
+
+    # WHEN
+    k_0_inverted = k_0.subs({l_0_1: L2K[0][1], l_1_0: L2K[1][0]})
+
+    # THEN
+    assert is_in_expr(l_0_1, k_0)
+    assert is_in_expr(l_1_0, k_0)
+
+    assert k_0_inverted == K(0)
