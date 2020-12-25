@@ -1,13 +1,11 @@
 """Implement the Hermitian and traceless type K 1-forms."""
 
 import sympy as sp
-import sympy.diffgeom as dg
 
 from typing import Tuple
-from L_1_forms import typeL
 
 
-class K(dg.Differential):
+class K(sp.Expr):
     """
     K_i 1-forms for SU(n).
 
@@ -15,13 +13,15 @@ class K(dg.Differential):
     The are (n²-1) in number.
     """
 
+    # __slots__ = ("index", *sp.Basic.__slots__)
+
     def __new__(cls, index: int):
         """
         Create a new K_i 1-form which is a sub-class of dg.Differential.
 
         :param index: The index of the 1-form between 0 and (n² - 2)
         """
-        obj = dg.Differential.__new__(cls, None)
+        obj = sp.Expr.__new__(cls)
         obj.index = index
         obj._args = tuple()
         return obj

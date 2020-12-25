@@ -3,7 +3,6 @@
 import sympy as sp
 import sympy.diffgeom as dg
 
-import L_1_forms
 import K_1_forms as sut
 
 from L_1_forms import L as createL
@@ -19,8 +18,8 @@ def test_creation_of_K_1_forms():
     k_1 = sut.K(1)
 
     # THEN
-    assert isinstance(k_1, dg.Differential)
-    assert dg.Differential(k_1) == 0
+    assert isinstance(k_1, sp.Expr)
+    assert k_1.index == 1
 
 
 def test_K_1_form_representation():

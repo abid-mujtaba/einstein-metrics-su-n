@@ -7,21 +7,17 @@ traceless.
 """
 
 import sympy as sp
-import sympy.diffgeom as dg
 
-from typing import Literal, Tuple
+from typing import Tuple
 
 
-class L(dg.Differential):
+class L(sp.Expr):
     """
     L_A^B 1-forms for SU(n).
 
     These are neither Hermitian nor traceless. They in fact correspond to
     each element in an SU(n) matrix in that A, B ∊ 𝕫^n and
     correspond to the element in the A-th row and B-th column of an SU(n) matrix.
-
-    They are based on a `None` form_field which means that
-    most methods of the Differential form will **not** work.
     """
 
     def __new__(cls, index_1: int, index_2: int):
@@ -31,7 +27,7 @@ class L(dg.Differential):
         :param index_1: The first index of the 1-form (between 0 and (n-1))
         :param index_2: The second index of the 1-form (between 0 and (n-1))
         """
-        obj = dg.Differential.__new__(cls, None)
+        obj = sp.Expr.__new__(cls)
 
         obj.index_1 = index_1
         obj.index_2 = index_2

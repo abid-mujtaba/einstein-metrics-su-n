@@ -1,6 +1,6 @@
 """Test the su_n_one_forms module."""
 
-import sympy.diffgeom as dg
+import sympy as sp
 import L_1_forms as sut
 
 
@@ -14,10 +14,9 @@ def test_creation_of_L_1_forms():
     l_12 = sut.L(1,2)
 
     # THEN
-    assert isinstance(l_12, dg.Differential)
-
-    # Applying a Differential twice should result in 0
-    assert dg.Differential(l_12) == 0
+    assert isinstance(l_12, sp.Expr)
+    assert l_12.index_1 == 1
+    assert l_12.index_2 == 2
 
 
 def test_L_1_form_representation():
@@ -109,4 +108,4 @@ def test_create_L_1_forms():
 
     for i in range(3):
         for j in range(3):
-            assert isinstance(L[i][j], dg.Differential)
+            assert isinstance(L[i][j], sp.Expr)
