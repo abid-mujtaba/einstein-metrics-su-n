@@ -73,3 +73,11 @@ def _L2K_mapping(a: int, b: int, n: int, Ldiag: Matrix):
         return _L2K_a_more_b(a, b, n)
 
     return Ldiag[a]
+
+
+def create_L2K(n: int):
+    """Create the L2K mappings for SU(n)."""
+    Ldiag = _L_diag_mappings(n)
+
+    # Create a list of lists nxn structure for the L_a^b 1-forms
+    return [[_L2K_mapping(a, b, n, Ldiag) for b in range(n)] for a in range(n)]

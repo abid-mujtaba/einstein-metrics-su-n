@@ -55,3 +55,16 @@ def test_L_diag_mappings():
 
     for i, j in zip(range(n), range(n)):
         assert is_in_expr(K(n**2 - i), L_diag[j])
+
+
+def test_create_L2K():
+    """Test the full method for creating L2K mappings."""
+    # GIVEN
+    n = 4
+
+    # WHEN
+    L2K = sut.create_L2K(n)
+
+    # THEN
+    assert len(L2K) == n
+    for i in range(n): assert len(L2K[i]) == n
