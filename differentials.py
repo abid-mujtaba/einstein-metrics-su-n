@@ -73,6 +73,6 @@ def create_dK(n: int) -> List[Expr]:
     """
     K2L = create_K2L(n)
     dK2L = [_differentiate_sum_of_L_1_forms(n, e) for e in K2L]
+    dK = [_convert_L_2_form(n, e) for e in dK2L]
 
-    # TODO: Place-holder for now
-    return dK2L
+    return dK
