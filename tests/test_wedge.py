@@ -28,18 +28,3 @@ def test_zero_wedge_of_equal_1_forms() -> None:
 
     # THEN
     assert wedge == 0
-
-
-def test_antisymmetry_of_wedge() -> None:
-    """Test that A ∧ B = - B ∧ A."""
-    # GIVEN
-    k_1 = K(1)
-    k_2 = K(2)
-
-    # WHEN
-    wedge_1_2 = sut.Wedge(k_1, k_2)
-    wedge_2_1 = sut.Wedge(k_2, k_1)
-
-    # THEN
-    assert k_1 < k_2
-    assert wedge_2_1 == -1 * wedge_1_2

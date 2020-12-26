@@ -1,6 +1,6 @@
 """Enhance the WedgeProduct class to gain automatic ordering and better printing."""
 
-from sympy import Expr
+from sympy import Expr, Integer
 from sympy.core import Add
 from sympy.printing import StrPrinter
 from typing import Any
@@ -14,16 +14,10 @@ class Wedge(Expr):  # type: ignore
     cancellation by default.
     """
     def __new__(cls, op1: Expr, op2: Expr) -> Expr:
-        if op1 < op2:
-            obj = Expr.__new__(cls, op1, op2)
+        if op1 == op2:  # Wedge product of an element with itself is zero by definition
+            return Integer(0)
 
-        elif op1 == op2:  # Wedge product of an element with itself is zero by definition
-            return 0
-
-        else:  # If op2 > op1 we reverse the order and multiply by -1 to implement
-               # antisymmetry at construction
-            obj = -1 * Wedge(op2, op1)
-
+        obj = Expr.__new__(cls, op1, op2)
         return obj
 
     def _sympystr(self, printer: StrPrinter, **kwargs: Any) -> str:
