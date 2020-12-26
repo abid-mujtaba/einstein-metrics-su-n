@@ -23,18 +23,6 @@ def test_dL() -> None:
     assert result == I * (Wedge(L(1,0), L(0,2)) + Wedge(L(1,1), L(1,2)) + Wedge(L(1,2), L(2,2)))
 
 
-def test_create_dK() -> None:
-    """Test the creation of the dK expressions."""
-    # GIVEN
-    n = 2
-
-    # WHEN
-    dK = sut.create_dK(n)
-
-    # THEN
-    assert len(dK) == n**2
-
-
 def test_differentiate_sum_of_L_1_forms_single() -> None:
     """Test the differentiation function using a single L 1-form."""
     # GIVEN
@@ -79,3 +67,15 @@ def test_convert_L_2_forms() -> None:
 
     # THEN
     assert result
+
+
+def test_create_dK() -> None:
+    """Test the creation of the dK expressions."""
+    # GIVEN
+    n = 2
+
+    # WHEN
+    dK = sut.create_dK(n)
+
+    # THEN
+    assert len(dK) == n**2
