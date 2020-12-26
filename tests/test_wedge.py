@@ -5,7 +5,7 @@ import wedge as sut
 from K_1_forms import K
 
 
-def test_representation():
+def test_representation() -> None:
     """Test string representation of a WedgeProduct."""
     # GIVEN
     k_1 = K(1)
@@ -18,7 +18,7 @@ def test_representation():
     assert str(wedge) == "K₁ ∧ K₂"
 
 
-def test_zero_wedge_of_equal_1_forms():
+def test_zero_wedge_of_equal_1_forms() -> None:
     """Taking the wedge of a 1-form with itself results in 0."""
     # GIVEN
     k_1 = K(1)
@@ -30,7 +30,7 @@ def test_zero_wedge_of_equal_1_forms():
     assert wedge == 0
 
 
-def test_antisymmetry_of_wedge():
+def test_antisymmetry_of_wedge() -> None:
     """Test that A ∧ B = - B ∧ A."""
     # GIVEN
     k_1 = K(1)

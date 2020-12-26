@@ -11,7 +11,7 @@ from K_L_mappings import create_K2L
 from utilities import is_in_expr
 
 
-def test_L2K_a_less_b():
+def test_L2K_a_less_b() -> None:
     """Test the calculation for L^a_b when a < b."""
     # GIVEN
     n = 4
@@ -28,7 +28,7 @@ def test_L2K_a_less_b():
     assert result == K(3) / 2 - I * K(9) / 2
 
 
-def test_L2K_a_more_b():
+def test_L2K_a_more_b() -> None:
     """Test the calculation for L^a_b when a < b."""
     # GIVEN
     n = 4
@@ -45,7 +45,7 @@ def test_L2K_a_more_b():
     assert result == K(3) / 2 + I * K(9) / 2
 
 
-def test_L_diag_mappings():
+def test_L_diag_mappings() -> None:
     """Test the creation of the diagonal L 1-form mappings using inverse of P and Q."""
     # GIVEN
     n = 4
@@ -63,7 +63,7 @@ def test_L_diag_mappings():
         assert not is_in_expr(K(16), l)
 
 
-def test_create_L2K():
+def test_create_L2K() -> None:
     """Test the full method for creating L2K mappings."""
     # GIVEN
     n = 4
@@ -77,7 +77,7 @@ def test_create_L2K():
         assert len(L2K[i]) == n
 
 
-def test_mapping_inversion_off_diagonal():
+def test_mapping_inversion_off_diagonal() -> None:
     """Map a K 1-form to the off-diagonal L 1-forms and back to confirm mappings."""
     # GIVEN
     n = 4
@@ -99,7 +99,7 @@ def test_mapping_inversion_off_diagonal():
     assert k_0_inverted == K(0)
 
 
-def test_mapping_inverstion_diagonal():
+def test_mapping_inverstion_diagonal() -> None:
     """Map a K 1-form to the diagonal L 1-forms and back to confirm mappings."""
     # GIVEN
     n = 4
@@ -127,7 +127,7 @@ def test_mapping_inverstion_diagonal():
     assert expand(k_15_inverted) == K(15)
 
 
-def test_mapping_inversion_complete():
+def test_mapping_inversion_complete() -> None:
     """Map all K 1-forms to L 1-forms and back to verify mappings completely."""
     # GIVEN
     n = 4

@@ -7,7 +7,7 @@ import K_1_forms as sut
 from L_1_forms import L as createL
 
 
-def test_creation_of_K_1_forms():
+def test_creation_of_K_1_forms() -> None:
     """
     Test the creation of the K 1-forms.
 
@@ -21,7 +21,7 @@ def test_creation_of_K_1_forms():
     assert k_1.index == 1
 
 
-def test_K_1_form_representation():
+def test_K_1_form_representation() -> None:
     """Should be represented with the index lowered."""
     # WHEN
     k_3 = sut.K(3)
@@ -35,7 +35,7 @@ def test_K_1_form_representation():
     assert str(k_12) == "K₁₂"
 
 
-def test_K_1_form_equality():
+def test_K_1_form_equality() -> None:
     """Equal only when the index matches."""
     # GIVEN
     a = sut.K(7)
@@ -46,7 +46,7 @@ def test_K_1_form_equality():
     assert hash(a) == hash(b)
 
 
-def test_K_1_form_inequality():
+def test_K_1_form_inequality() -> None:
     """Equal only when the index matches."""
     # GIVEN
     a = sut.K(3)
@@ -57,7 +57,7 @@ def test_K_1_form_inequality():
     assert hash(a) != hash(b)
 
 
-def test_K_1_form_ordering():
+def test_K_1_form_ordering() -> None:
     """Ordering is based on indices."""
     # GIVEN
     k_3 = sut.K(3)
@@ -68,7 +68,7 @@ def test_K_1_form_ordering():
     assert k_7 > k_3
 
 
-def test_addition():
+def test_addition() -> None:
     """Good test of sympy functionality, ability to add to create a new expression."""
     # GIVEN
     k_3 = sut.K(3)

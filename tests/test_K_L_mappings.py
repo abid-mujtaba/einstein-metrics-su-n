@@ -12,7 +12,7 @@ from L_1_forms import L
 from utilities import is_in_expr
 
 
-def test_category_1_K2L():
+def test_category_1_K2L() -> None:
     """Test creation of the category 1 mapping from K to L 1-forms."""
     # GIVEN
     n = 3
@@ -28,7 +28,7 @@ def test_category_1_K2L():
     assert K2L[-1] == L(2,1) + L(1,2)
 
 
-def test_category_2_K2L():
+def test_category_2_K2L() -> None:
     """Test creation of the category 2 mapping from K to L 1-forms."""
     # GIVEN
     n = 3
@@ -44,7 +44,7 @@ def test_category_2_K2L():
     assert K2L[-1] == I * (L(1,2) - L(2,1))
 
 
-def test_P_matrix():
+def test_P_matrix() -> None:
     """Test the creation of the P matrix used to create the category 3 mappings."""
     # GIVEN
     n = 4
@@ -79,7 +79,7 @@ def test_P_matrix():
     assert row_1.dot(row_2) == 0
 
 
-def test_Q_matrix():
+def test_Q_matrix() -> None:
     """Test the Q matrix used for mapping the category 3 K 1-forms to diag L 1-forms."""
     # GIVEN
     n = 4
@@ -114,7 +114,7 @@ def test_Q_matrix():
     assert row_n.dot(row_n) == 1
 
 
-def test_category_3_K2L():
+def test_category_3_K2L() -> None:
     """Test the creation of the category 3 K2L mappings (uses the P qnd Q matrices)."""
     # GIVEN
     n = 4
@@ -130,7 +130,7 @@ def test_category_3_K2L():
         assert is_in_expr(L(i,i), K2L[j])
 
 
-def test_create_K2L():
+def test_create_K2L() -> None:
     """Test creation of complete K2L mapping."""
     # GIVEN
     n = 4

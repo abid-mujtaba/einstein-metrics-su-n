@@ -9,7 +9,7 @@ from L_1_forms import L
 from wedge import Wedge
 
 
-def test_dL():
+def test_dL() -> None:
     """Test the calculation of the differential of L 1-forms."""
     # GIVEN
     n = 3
@@ -23,7 +23,7 @@ def test_dL():
     assert result == I * (Wedge(L(1,0), L(0,2)) + Wedge(L(1,1), L(1,2)) + Wedge(L(1,2), L(2,2)))
 
 
-def test_create_dK():
+def test_create_dK() -> None:
     """Test the creation of the dK expressions."""
     # GIVEN
     n = 2
@@ -35,7 +35,7 @@ def test_create_dK():
     assert len(dK) == n**2
 
 
-def test_differentiate_sum_of_L_1_forms_single():
+def test_differentiate_sum_of_L_1_forms_single() -> None:
     """Test the differentiation function using a single L 1-form."""
     # GIVEN
     n = 3
@@ -50,7 +50,7 @@ def test_differentiate_sum_of_L_1_forms_single():
     assert result == sut.dL(a, b, n)
 
 
-def test_differential_sum_of_L_1_forms_double():
+def test_differential_sum_of_L_1_forms_double() -> None:
     """Test the differentiation function using a linear combination of 2 L 1-forms."""
     # GIVEN
     n = 4
@@ -66,13 +66,13 @@ def test_differential_sum_of_L_1_forms_double():
     assert expand(result) == expand(2 * sut.dL(1, 2, n) - 3 * sut.dL(3, 0, n))
 
 
-def test_convert_L_2_forms():
+def test_convert_L_2_forms() -> None:
     """Test the conversion of L 2-forms (via wedge) to wedged K 1-forms."""
     # GIVEN
     n = 2
     wedge = Wedge(L(0,1), L(1,0))
 
-    L2K = create_L2K(n)
+    # L2K = create_L2K(n)
 
     # WHEN
     result = sut._convert_L_2_form(n, wedge)

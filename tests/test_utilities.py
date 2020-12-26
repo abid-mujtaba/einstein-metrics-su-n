@@ -7,7 +7,7 @@ from sympy.abc import x, y, z
 import utilities as sut
 
 
-def test_is_in_expr_error_if_object_is_not_a_leaf():
+def test_is_in_expr_error_if_object_is_not_a_leaf() -> None:
     """Attempting to find a non-leaf object should raise a ValueError."""
     # GIVEN
     obj = x + y
@@ -19,7 +19,7 @@ def test_is_in_expr_error_if_object_is_not_a_leaf():
 
 
 # TODO: Parametrize this
-def test_is_in_expr_true():
+def test_is_in_expr_true() -> None:
     """Test when the object is in the expression."""
     # GIVEN
     obj = x
@@ -33,7 +33,7 @@ def test_is_in_expr_true():
 
 
 # TODO: Parametrize this
-def test_is_in_expr_false():
+def test_is_in_expr_false() -> None:
     """Test when the object is NOT in the expression."""
     # GIVEN
     obj = x
