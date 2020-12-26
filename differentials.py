@@ -5,6 +5,7 @@ from sympy import I, Expr
 from typing import List
 
 from K_L_mappings import create_K2L
+from L_K_mappings import create_L2K
 from L_1_forms import L
 from wedge import Wedge
 
@@ -42,6 +43,27 @@ def _differentiate_sum_of_L_1_forms(n: int, expr) -> Expr:
     return sub(expr)
 
 
+def _convert_L_2_form(n: int, expr: Expr) -> Expr:
+    """Convert an expression containing wedged L 1-forms to K 1-forms."""
+    L2K = create_L2K(n)
+
+    def sub_L(l: L) -> Expr:
+        a = l.index_1
+        b = l.index_2
+
+        return L2K[a][b]
+
+    def sub(e: Expr) -> Expr:
+        """Recursive function for replace L with K."""
+        if isinstance(e, L):
+            return sub_L(e)
+
+        e._args = tuple(sub(arg) for arg in e.args)
+        return e
+
+    return sub(expr)
+
+
 def create_dK(n: int) -> List[Expr]:
     """
     Calculate the differential for all the K 1-forms in SU(n).
@@ -51,6 +73,7 @@ def create_dK(n: int) -> List[Expr]:
     and then map back to the K 1-forms.
     """
     K2L = create_K2L(n)
+    dK2L = [_differentiate_sum_of_L_1_forms(n, e) for e in K2L]
 
     # TODO: Place-holder for now
-    return K2L
+    return dK2L

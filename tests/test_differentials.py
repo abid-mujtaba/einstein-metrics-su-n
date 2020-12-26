@@ -1,5 +1,6 @@
 """Test the differentials module."""
 
+from L_K_mappings import create_L2K
 from sympy import I, expand
 
 import differentials as sut
@@ -63,3 +64,18 @@ def test_differential_sum_of_L_1_forms_double():
 
     # THEN
     assert expand(result) == expand(2 * sut.dL(1, 2, n) - 3 * sut.dL(3, 0, n))
+
+
+def test_convert_L_2_forms():
+    """Test the conversion of L 2-forms (via wedge) to wedged K 1-forms."""
+    # GIVEN
+    n = 2
+    wedge = Wedge(L(0,1), L(1,0))
+
+    L2K = create_L2K(n)
+
+    # WHEN
+    result = sut._convert_L_2_form(n, wedge)
+
+    # THEN
+    assert result
