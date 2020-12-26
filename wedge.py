@@ -1,6 +1,8 @@
 """Enhance the WedgeProduct class to gain automatic ordering and better printing."""
 
 from sympy import Expr
+from sympy.core import Add
+
 
 class Wedge(Expr):
     """
@@ -27,4 +29,11 @@ class Wedge(Expr):
 
     def _sympystr(self, printer, **kwargs):
         """Custom printer for the Wedge operation."""
-        return f"{self.args[0]} ∧ {self.args[1]}"
+        def s(op):
+            """Convert operand of Wedge to string, adding parentheses if of type Add."""
+            if isinstance(op, Add):
+                return f"({op})"
+
+            return str(op)
+
+        return f"{s(self.args[0])} ∧ {s(self.args[1])}"
