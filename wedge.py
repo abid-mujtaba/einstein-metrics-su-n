@@ -3,7 +3,7 @@
 from sympy import Expr, Integer
 from sympy.core import Add
 from sympy.printing import StrPrinter
-from typing import Any
+from typing import Any, List
 
 
 class Wedge(Expr):  # type: ignore
@@ -30,3 +30,48 @@ class Wedge(Expr):  # type: ignore
             return str(op)
 
         return f"{s(self.args[0])} ∧ {s(self.args[1])}"
+
+
+def expand_K(expr: Expr) -> Expr:
+    """
+    Expand operands consisting of addition of K 1-forms in a Wedge.
+
+    e.g. Wedge(K_1, K_2 + K_3) => Wedge(K_1, K_2) + Wedge(K_1, K_3)
+    """
+    def _collect_add(e: Add) -> Add:
+        """
+        Collect Add over Add into a single Add.
+
+        e.g. (a + b) + (c + d) => (a + b + c + d)
+        """
+        args: List[Expr] = []
+
+        for arg in e.args:
+            if isinstance(arg, Add):
+                args = [*args, *arg.args]
+            else:
+                args.append(arg)
+
+        return sum(args)
+
+    def _expand(wedge: Wedge) -> Expr:
+        """Expand the operands of a Wedge."""
+        op1 = wedge.args[0]
+        op2 = wedge.args[1]
+
+        if isinstance(op1, Add):
+            # After op1 expansion recursively call expand_K to deal with op2
+            return expand_K(sum(Wedge(arg, op2) for arg in op1.args))
+
+        if isinstance(op2, Add):
+            return sum(Wedge(op1, arg) for arg in op2.args)
+
+        return wedge
+
+    if isinstance(expr, Wedge):
+        # If both op1 and op2 were Add we will end up with an Add over Add which
+        # should be collected in to a single Add
+        return _collect_add(_expand(expr))
+
+    expr._args = tuple(expand_K(arg) for arg in expr._args)
+    return expr
