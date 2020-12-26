@@ -4,7 +4,7 @@ from sympy import Expr
 from sympy.core.basic import preorder_traversal
 
 
-def is_in_expr(obj: Expr, expr: Expr):
+def is_in_expr(obj: Expr, expr: Expr) -> bool:
     """
     Determine whether the obj is inside the expr.
 

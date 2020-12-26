@@ -1,6 +1,5 @@
 """Calculate the differential (d<.>) of the L and K 1-forms."""
 
-from itertools import product
 from sympy import I, Expr
 from typing import List
 
@@ -20,7 +19,7 @@ def dL(a: int, b: int, n: int) -> Expr:
     return I * sum(Wedge(L(a, i), L(i, b)) for i in range(n))
 
 
-def _differentiate_sum_of_L_1_forms(n: int, expr) -> Expr:
+def _differentiate_sum_of_L_1_forms(n: int, expr: Expr) -> Expr:
     """Calculate the differential of an expression which is the sum of L 1-forms."""
     # We will directly replace each L 1-form with its corresponding dL value to
     # simulate the differential

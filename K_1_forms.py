@@ -1,9 +1,11 @@
 """Implement the Hermitian and traceless type K 1-forms."""
 
-import sympy as sp
+from sympy import Expr
+from sympy.printing import StrPrinter
+from typing import Any, Tuple
 
 
-class K(sp.Expr):
+class K(Expr):  # type: ignore
     """
     K_i 1-forms for SU(n).
 
@@ -11,9 +13,9 @@ class K(sp.Expr):
     The are (n²-1) in number.
     """
 
-    def __new__(cls, index: int):
+    def __new__(cls, index: int) -> Expr:
         """Create a new K_i 1-form which is a sub-class of sp.Expr."""
-        obj = sp.Expr.__new__(cls)
+        obj = Expr.__new__(cls)
         obj._args = tuple()
         return obj
 
@@ -30,11 +32,11 @@ class K(sp.Expr):
 
 
     @property
-    def is_number(self):
+    def is_number(self) -> bool:
         """Used by sympy to process expressions."""
         return False
 
-    def _hashable_content(self):
+    def _hashable_content(self) -> Tuple[int]:
         """The hashable (identifying) content of the K 1-form, mainly its index."""
         return (self.index,)
 
@@ -67,18 +69,18 @@ class K(sp.Expr):
         """Convert an integer to a subscript unicode string."""
         return "".join(cls._unicode_subscripts[int(_)] for _ in str(index))
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Print the K 1-form in its classic K_{index} form."""
         return f"K{self._index_to_unicode(self.index)}"
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """Same as str."""
         return self.__str__()
 
-    def _sympystr(self, printer, *args):
+    def _sympystr(self, printer: StrPrinter, *args: Any) -> str:
         """Sympy method used when string-type printing an expression."""
         return self.__str__()
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         """Unique hash based on _hashable_contents(), mainly index."""
         return hash(self._hashable_content())

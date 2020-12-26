@@ -1,7 +1,6 @@
 """Test the su(n) K 1-forms module."""
 
 import sympy as sp
-import sympy.diffgeom as dg
 
 import K_1_forms as sut
 

@@ -1,21 +1,20 @@
 """The mappings between the K and L 1-forms, in both directions."""
 
 import itertools
-from sympy import Expr, I, Rational
+from sympy import Expr, I, Integer, Rational
 from sympy.functions import sqrt
 from sympy.matrices import ones, diag, eye, Matrix
-from typing import List
+from typing import Iterator, List
 
 from L_1_forms import L
-from K_1_forms import K
 
 
-def _category_1_K2L(n: int):
+def _category_1_K2L(n: int) -> Iterator[Expr]:
     """First n(n - 1)/2 mappings of the form L_A^B + L^B_A for A != B."""
     return (L(a, b) + L(b, a) for a, b in itertools.combinations(range(n), 2))
 
 
-def _category_2_K2L(n: int):
+def _category_2_K2L(n: int) -> Iterator[Expr]:
     """Second n(n -1)/2 mappings of the form i*(L_A^B - L_B^A) for A != B."""
     return (I * (L(a, b) - L(b, a)) for a, b in itertools.combinations(range(n), 2))
 
@@ -59,7 +58,7 @@ def _create_Q_matrix(n: int) -> Matrix:
         a = i + 1  # 1-indexed row number
         norm = 1 / sqrt(a + a ** 2)  # Normalization factor
 
-        return [*(norm for _ in range(a)), -a * norm, *(0 for _ in range(n - a - 1))]
+        return [*(norm for _ in range(a)), -a * norm, *(Integer(0) for _ in range(n - a - 1))]
 
     return Matrix(
         [
@@ -69,7 +68,7 @@ def _create_Q_matrix(n: int) -> Matrix:
     )
 
 
-def _category_3_K2L(n: int):
+def _category_3_K2L(n: int) -> Iterator[Expr]:
     """Create the category 3 K2L mappings."""
     # Create a columns vector from the L 1-forms which is used in the matrix based
     # creation of the mapping to K 1-forms
@@ -83,7 +82,7 @@ def _category_3_K2L(n: int):
     return (k[i] for i in range(n))
 
 
-def create_K2L(n: int):
+def create_K2L(n: int) -> List[Expr]:
     """Create mappings from the K to the L 1-forms for SU(n)."""
     return [
         *_category_1_K2L(n),

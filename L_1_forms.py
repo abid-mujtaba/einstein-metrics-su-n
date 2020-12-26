@@ -6,12 +6,12 @@ the K_i which are created from their liner combination to be both hermitian and
 traceless.
 """
 
-import sympy as sp
+from sympy import Expr
+from sympy.printing import StrPrinter
+from typing import Any, Tuple
 
-from typing import Tuple
 
-
-class L(sp.Expr):
+class L(Expr):  # type: ignore
     """
     L_A^B 1-forms for SU(n).
 
@@ -20,14 +20,14 @@ class L(sp.Expr):
     correspond to the element in the A-th row and B-th column of an SU(n) matrix.
     """
 
-    def __new__(cls, index_1: int, index_2: int):
+    def __new__(cls, index_1: int, index_2: int) -> Expr:
         """
         Create a new L_A^B object which is a sub-class of sp.Expr.
 
         :param index_1: The first index of the 1-form (between 0 and (n-1))
         :param index_2: The second index of the 1-form (between 0 and (n-1))
         """
-        obj = sp.Expr.__new__(cls)
+        obj = Expr.__new__(cls)
 
         obj._args = tuple()  # By definition the L 1-forms do not have expressions
                              # inside. .args is a property so have to override the
@@ -50,11 +50,11 @@ class L(sp.Expr):
 
 
     @property
-    def is_number(self):
+    def is_number(self) -> bool:
         """Used by sympy to process expressions."""
         return False
 
-    def _hashable_content(self):
+    def _hashable_content(self) -> Tuple[int, int]:
         """The hashable (identifying) content of the L 1-form, mainly its indices."""
         return (self.index_1, self.index_2)
 
@@ -93,7 +93,7 @@ class L(sp.Expr):
     _unicode_superscripts = ("⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹")
 
     @classmethod
-    def _get_subscript(cls, index):
+    def _get_subscript(cls, index: int) -> str:
         try:
             return cls._unicode_subscripts[index]
 
@@ -101,28 +101,28 @@ class L(sp.Expr):
             return f"_{index}"
 
     @classmethod
-    def _get_superscript(cls, index):
+    def _get_superscript(cls, index: int) -> str:
         try:
             return cls._unicode_superscripts[index]
 
         except IndexError:
             return f"^{index}"
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Print the L 1-form in its classic subscript+superscript form."""
         return (
             f"L{self._get_subscript(self.index_1)}{self._get_superscript(self.index_2)}"
         )
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """Falls back on __str__."""
         return self.__str__()
 
-    def _sympystr(self, printer, *args):
+    def _sympystr(self, printer: StrPrinter, *args: Any) -> str:
         """Sympy method used when string-type printing an expression."""
         return self.__str__()
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         """
         Unique hash based on indices.
 

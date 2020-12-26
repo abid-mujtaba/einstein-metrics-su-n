@@ -7,12 +7,13 @@ These are the inverse of the mappings created in K_L_mappings.py.
 import itertools
 from sympy import I, S, Expr
 from sympy.matrices import Matrix
+from typing import List
 
 from K_1_forms import K
 from K_L_mappings import _create_P_matrix, _create_Q_matrix
 
 
-def _index_from_pair(a: int, b: int, n: int):
+def _index_from_pair(a: int, b: int, n: int) -> int:
     """Calculate the K 1-form index from the L 1-form pair (a, b)."""
     # Since itertools.combinations is used to construct the K 1-forms we
     # use it to invert the relationship
@@ -46,7 +47,7 @@ def _L2K_a_more_b(a: int, b: int, n: int) -> Expr:
     return S.Half * K(i) + I * S.Half * K(j)
 
 
-def _L_diag_mappings(n: int):
+def _L_diag_mappings(n: int) -> Matrix:
     """Generate the mappings for the diagonal L_a^a using the P and Q matrices."""
     P = _create_P_matrix(n)
     Q = _create_Q_matrix(n)
@@ -64,7 +65,7 @@ def _L_diag_mappings(n: int):
     return invQ * invP * k
 
 
-def _L2K_mapping(a: int, b: int, n: int, Ldiag: Matrix):
+def _L2K_mapping(a: int, b: int, n: int, Ldiag: Matrix) -> Expr:
     """Create the mapping for L_a^b."""
     if a < b:
         return _L2K_a_less_b(a, b, n)
@@ -75,7 +76,7 @@ def _L2K_mapping(a: int, b: int, n: int, Ldiag: Matrix):
     return Ldiag[a]
 
 
-def create_L2K(n: int):
+def create_L2K(n: int) -> List[List[Expr]]:
     """Create the L2K mappings for SU(n)."""
     Ldiag = _L_diag_mappings(n)
 
