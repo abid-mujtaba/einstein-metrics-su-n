@@ -27,13 +27,7 @@ class L(Expr):  # type: ignore
         :param index_1: The first index of the 1-form (between 0 and (n-1))
         :param index_2: The second index of the 1-form (between 0 and (n-1))
         """
-        obj = Expr.__new__(cls)
-
-        obj._args = tuple()  # By definition the L 1-forms do not have expressions
-                             # inside. .args is a property so have to override the
-                             # underlying _args attribute
-
-        return obj
+        return Expr.__new__(cls)
 
 
     __slots__ = ("index_1", "index_2")

@@ -15,9 +15,7 @@ class K(Expr):  # type: ignore
 
     def __new__(cls, index: int) -> Expr:
         """Create a new K_i 1-form which is a sub-class of sp.Expr."""
-        obj = Expr.__new__(cls)
-        obj._args = tuple()
-        return obj
+        return Expr.__new__(cls)
 
 
     __slots__ = ("index",)
