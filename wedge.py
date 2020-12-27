@@ -29,7 +29,7 @@ class Wedge(Expr):  # type: ignore
 
             return str(op)
 
-        return f"{s(self.args[0])} ∧ {s(self.args[1])}"
+        return f"({s(self.args[0])} ∧ {s(self.args[1])})"
 
 
 def expand_K(expr: Expr) -> Expr:

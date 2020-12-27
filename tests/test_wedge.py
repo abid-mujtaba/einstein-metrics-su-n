@@ -17,7 +17,7 @@ def test_representation() -> None:
     wedge = sut.Wedge(k_1, k_2)
 
     # THEN
-    assert str(wedge) == "K₁ ∧ K₂"
+    assert str(wedge) == "(K₁ ∧ K₂)"
 
 
 def test_zero_wedge_of_equal_1_forms() -> None:
