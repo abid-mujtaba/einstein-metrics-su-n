@@ -6,7 +6,7 @@ from typing import List
 from K_L_mappings import create_K2L
 from L_K_mappings import create_L2K
 from L_1_forms import L
-from wedge import Wedge
+from wedge import Wedge, expand_K, extract_factor_K
 
 
 def dL(a: int, b: int, n: int) -> Expr:
@@ -79,6 +79,9 @@ def create_dK(n: int) -> List[Expr]:
     """
     K2L = create_K2L(n)
     dK2L = [_differentiate_sum_of_L_1_forms(n, e) for e in K2L]
-    dK = [_convert_L_2_form(n, e) for e in dK2L]
+
+    dK = [_convert_L_2_form(n, e) for e in dK2L]  # Intermediate form
+    dK = [expand_K(e) for e in dK]  # Expand the Wedges
+    dK = [extract_factor_K(e) for e in dK]  # Extract factors from the Wedges
 
     return dK
