@@ -1,9 +1,12 @@
 """Enhance the WedgeProduct class to gain automatic ordering and better printing."""
 
+from more_itertools import partition
 from sympy import Expr, Integer
-from sympy.core import Add
+from sympy.core import Add, Mul
 from sympy.printing import StrPrinter
 from typing import Any, List
+
+from K_1_forms import K
 
 
 class Wedge(Expr):  # type: ignore
@@ -75,5 +78,40 @@ def expand_K(expr: Expr) -> Expr:
 
     if expr.args:  # Descend and recurse
         return expr.func(*(expand_K(arg) for arg in expr.args))
+
+    return expr  # Return immutable leafs as is
+
+
+def extract_factor_K(expr: Expr) -> Expr:
+    """
+    For wedges of K 1-forms extract multiplicative factors outside the wedge.
+
+    e.g. K(1) ^ (2 * K(2)) => 2 * (K(1) ^ K(2))
+    """
+    def _extract(wedge: Wedge) -> Expr:
+        """Extract multiplicative factors of K 1-forms from Wedge."""
+        op1 = wedge.args[0]
+        op2 = wedge.args[1]
+
+        if isinstance(op1, Mul) and any(isinstance(arg, K) for arg in op1.args):
+            args_, match = partition(lambda e: isinstance(e, K), op1.args)
+            op1_ = next(match)
+
+            # Recursive call so that the right-operand is extracted as well
+            return extract_factor_K(Mul(*args_, Wedge(op1_, op2)))
+
+        if isinstance(op2, Mul) and any(isinstance(arg, K) for arg in op2.args):
+            args_, match = partition(lambda e: isinstance(e, K), op2.args)
+            op2_ = next(match)
+
+            return Mul(*args_, Wedge(op1, op2_))
+
+        return wedge
+
+    if isinstance(expr, Wedge):  # Replace
+        return _extract(expr)
+
+    if expr.args:  # Descend and recurse
+        return expr.func(*(extract_factor_K(arg) for arg in expr.args))
 
     return expr  # Return immutable leafs as is

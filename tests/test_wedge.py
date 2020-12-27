@@ -1,6 +1,7 @@
 """Test the wrapper Wedge class in the wedge module."""
 
 from sympy import expand
+from sympy.abc import a, b
 
 import wedge as sut
 
@@ -54,3 +55,48 @@ def test_expand_K() -> None:
 
     # THEN
     assert result == expected_result
+
+
+def test_extract_factor_K_left() -> None:
+    """Test extraction of factor out of left operand of wedge over K 1-forms."""
+    # GIVEN
+    k_1 = K(1)
+    k_2 = K(2)
+
+    expr = sut.Wedge(a * k_1, k_2)
+
+    # WHEN
+    result = sut.extract_factor_K(expr)
+
+    # THEN
+    assert result == a * sut.Wedge(k_1, k_2)
+
+
+def test_extract_factor_K_right() -> None:
+    """Test extraction of factor out of right operand of wedge over K 1-forms."""
+    # GIVEN
+    k_1 = K(1)
+    k_2 = K(2)
+
+    expr = sut.Wedge(k_1, b * k_2)
+
+    # WHEN
+    result = sut.extract_factor_K(expr)
+
+    # THEN
+    assert result == b * sut.Wedge(k_1, k_2)
+
+
+def test_extract_factor_K_both_sides() -> None:
+    """Test extraction of factors out of both operands of wedge over K 1-forms."""
+    # GIVEN
+    k_1 = K(1)
+    k_2 = K(2)
+
+    expr = sut.Wedge(a * k_1, b * k_2)
+
+    # WHEN
+    result = sut.extract_factor_K(expr)
+
+    # THEN
+    assert result == a * b * sut.Wedge(k_1, k_2)
