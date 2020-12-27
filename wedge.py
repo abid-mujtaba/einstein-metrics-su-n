@@ -59,8 +59,7 @@ def expand_K(expr: Expr) -> Expr:
 
     def _expand(wedge: Wedge) -> Expr:
         """Expand the operands of a Wedge."""
-        op1 = wedge.args[0]
-        op2 = wedge.args[1]
+        op1, op2 = wedge.args
 
         if isinstance(op1, Add):
             # After op1 expansion recursively call expand_K to deal with op2
@@ -90,8 +89,7 @@ def extract_factor_K(expr: Expr) -> Expr:
     """
     def _extract(wedge: Wedge) -> Expr:
         """Extract multiplicative factors of K 1-forms from Wedge."""
-        op1 = wedge.args[0]
-        op2 = wedge.args[1]
+        op1, op2 = wedge.args
 
         if isinstance(op1, Mul) and any(isinstance(arg, K) for arg in op1.args):
             args_, match = partition(lambda e: isinstance(e, K), op1.args)
@@ -113,5 +111,32 @@ def extract_factor_K(expr: Expr) -> Expr:
 
     if expr.args:  # Descend and recurse
         return expr.func(*(extract_factor_K(arg) for arg in expr.args))
+
+    return expr  # Return immutable leafs as is
+
+
+def antisymm(expr: Expr) -> Expr:
+    """
+    Use antisymmetry of Wedge to consolidate.
+
+    Each Wedge will be transformed in to the explicit order where the left operand is
+    "less" than the right operand.
+
+    e.g. K(2) ^ K(1) => - (K(1) ^ K(2))
+    """
+    def _antisymm(wedge: Wedge) -> Expr:
+        """Carry out antisymmetric simplification of a Wedge."""
+        op1, op2 = wedge.args
+
+        if op2 < op1:  # Flip order and sign
+            return -1 * Wedge(op2, op1)
+
+        return wedge
+
+    if isinstance(expr, Wedge):  # Replace
+        return _antisymm(expr)
+
+    if expr.args:  # Descend and recurse
+        return expr.func(*(antisymm(arg) for arg in expr.args))
 
     return expr  # Return immutable leafs as is

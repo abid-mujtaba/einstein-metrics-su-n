@@ -100,3 +100,48 @@ def test_extract_factor_K_both_sides() -> None:
 
     # THEN
     assert result == a * b * sut.Wedge(k_1, k_2)
+
+
+def test_antisymm_already_in_ascending_order() -> None:
+    """No change when the Wedge is already in ascending order."""
+    # GIVEN (k_1 < k_2)
+    k_1 = K(1)
+    k_2 = K(2)
+
+    expr = sut.Wedge(k_1, k_2)
+
+    # WHEN
+    result = sut.antisymm(expr)
+
+    # THEN
+    assert result == expr
+
+
+def test_antisymm_in_descending_order() -> None:
+    """Flip order and sign when operands of the Wedge are in descending order."""
+    # GIVEN (k_1 < k_2)
+    k_1 = K(1)
+    k_2 = K(2)
+
+    expr = sut.Wedge(k_2, k_1)
+
+    # WHEN
+    result = sut.antisymm(expr)
+
+    # THEN
+    assert result == -1 * sut.Wedge(k_1, k_2)
+
+
+def test_antisymm_complicated_expression() -> None:
+    """Test antisymm on a slightly complicated expression to test recursion."""
+    # GIVEN (k_1 < k_2)
+    k_1 = K(1)
+    k_2 = K(2)
+
+    expr = a + b * sut.Wedge(k_2, k_1)
+
+    # WHEN
+    result = sut.antisymm(expr)
+
+    # THEN
+    assert result == a - b * sut.Wedge(k_1, k_2)
