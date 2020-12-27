@@ -25,6 +25,8 @@ def _differentiate_sum_of_L_1_forms(n: int, expr: Expr) -> Expr:
     # simulate the differential
     # We are assuming that the expression is a linear combination of the L 1-forms
     # with constant coefficients (whose differential is zero)
+    # We will NOT modify the original expression but will in fact create a new
+    # expression
     def sub_L(l: L) -> Expr:
         a = l.index_1
         b = l.index_2
@@ -33,11 +35,13 @@ def _differentiate_sum_of_L_1_forms(n: int, expr: Expr) -> Expr:
 
     def sub(e: Expr) -> Expr:
         """Recursive function for replacing L with dL."""
-        if isinstance(e, L):
+        if e.args:  # Descend and Recurse
+            return e.func(*(sub(arg) for arg in e.args))
+
+        if isinstance(e, L):  # Replace
             return sub_L(e)
 
-        e._args = tuple(sub(arg) for arg in e.args)
-        return e
+        return e  # An immutable leaf expression is returned as is
 
     return sub(expr)
 
@@ -54,11 +58,13 @@ def _convert_L_2_form(n: int, expr: Expr) -> Expr:
 
     def sub(e: Expr) -> Expr:
         """Recursive function for replace L with K."""
-        if isinstance(e, L):
+        if e.args:  # Descend and recurse
+            return e.func(*(sub(arg) for arg in e.args))
+
+        if isinstance(e, L):  # Replace
             return sub_L(e)
 
-        e._args = tuple(sub(arg) for arg in e.args)
-        return e
+        return e  # Return immutable leafs as is
 
     return sub(expr)
 

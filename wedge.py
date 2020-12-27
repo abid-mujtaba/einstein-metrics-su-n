@@ -68,10 +68,12 @@ def expand_K(expr: Expr) -> Expr:
 
         return wedge
 
-    if isinstance(expr, Wedge):
+    if isinstance(expr, Wedge):  # Replace
         # If both op1 and op2 were Add we will end up with an Add over Add which
         # should be collected in to a single Add
         return _collect_add(_expand(expr))
 
-    expr._args = tuple(expand_K(arg) for arg in expr._args)
-    return expr
+    if expr.args:  # Descend and recurse
+        return expr.func(*(expand_K(arg) for arg in expr.args))
+
+    return expr  # Return immutable leafs as is
