@@ -1,12 +1,12 @@
 """Calculate the differential (d<.>) of the L and K 1-forms."""
 
-from sympy import I, Expr
+from sympy import I, Expr, expand
 from typing import List
 
 from K_L_mappings import create_K2L
 from L_K_mappings import create_L2K
 from L_1_forms import L
-from wedge import Wedge, expand_K, extract_factor_K
+from wedge import Wedge, antisymm, expand_K, extract_factor_K
 
 
 def dL(a: int, b: int, n: int) -> Expr:
@@ -83,5 +83,7 @@ def create_dK(n: int) -> List[Expr]:
     dK = [_convert_L_2_form(n, e) for e in dK2L]  # Intermediate form
     dK = [expand_K(e) for e in dK]  # Expand the Wedges
     dK = [extract_factor_K(e) for e in dK]  # Extract factors from the Wedges
+    dK = [antisymm(e) for e in dK]  # Consolidate anti-symmetric entries
+    dK = [expand(e) for e in dK]  # Expand the expression to get sum over products
 
     return dK
