@@ -2,7 +2,7 @@
 
 import pytest
 
-from sympy import I, Rational
+from sympy import I, Rational, expand
 from sympy.functions import sqrt
 from sympy.matrices import Matrix
 
@@ -140,3 +140,20 @@ def test_create_K2L() -> None:
 
     # THEN
     assert len(K2L) == n**2
+
+
+def test_create_K2L_n_equals_2() -> None:
+    """Test mapping for n = 2 with results calculated by hand."""
+    # GIVEN
+    n = 2
+
+    # WHEN
+    K2L = sut.create_K2L(n)
+
+    # THEN
+    assert len(K2L) == 4
+
+    assert K2L[0] == L(0,1) + L(1,0)
+    assert K2L[1] == I * (L(0, 1) - L(1,0))
+    assert K2L[2] == expand((L(0,0) - L(1,1)) / sqrt(2))
+    assert K2L[3] == expand((L(0,0) + L(1,1)) / sqrt(2))

@@ -1,7 +1,7 @@
 """Test the L2K mappings module."""
 
 from itertools import product
-from sympy import I, expand, collect, simplify
+from sympy import I, expand, collect, simplify, sqrt
 
 import L_K_mappings as sut
 
@@ -143,3 +143,22 @@ def test_mapping_inversion_complete() -> None:
     # THEN
     for i in range(n**2):
         assert expand(k_inv[i]) == K(i)
+
+
+def test_create_K2L_n_equals_2() -> None:
+    """Test K2L mapping for n = 2 against hand calculated results."""
+    # GIVEN
+    n = 2
+
+    # WHEN
+    L2K = sut.create_L2K(n)
+
+    # THEN
+    assert len(L2K) == 2
+    assert len(L2K[0]) == 2
+    assert len(L2K[1]) == 2
+
+    assert L2K[0][0] == expand((K(2) + K(3)) / sqrt(2))
+    assert L2K[0][1] == expand((K(0) - I * K(1)) / 2)
+    assert L2K[1][0] == expand((K(0) + I * K(1)) / 2)
+    assert L2K[1][1] == expand(-1 * (K(2) - K(3)) / sqrt(2))
