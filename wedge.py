@@ -47,15 +47,18 @@ def expand_K(expr: Expr) -> Expr:
 
         e.g. (a + b) + (c + d) => (a + b + c + d)
         """
-        args: List[Expr] = []
+        if isinstance(e, Add):
+            args: List[Expr] = []
 
-        for arg in e.args:
-            if isinstance(arg, Add):
-                args = [*args, *arg.args]
-            else:
-                args.append(arg)
+            for arg in e.args:
+                if isinstance(arg, Add):
+                    args = [*args, *arg.args]
+                else:
+                    args.append(arg)
 
-        return sum(args)
+            return sum(args)
+
+        return e
 
     def _expand(wedge: Wedge) -> Expr:
         """Expand the operands of a Wedge."""
