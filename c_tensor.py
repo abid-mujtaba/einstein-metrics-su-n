@@ -8,6 +8,7 @@ Based on the definitions:
 """
 
 from sympy import Expr, Add, Mul, Array
+from sympy.tensor import tensorcontraction as tc, tensorproduct as tp
 from typing import List
 
 from wedge import Wedge
@@ -66,3 +67,12 @@ def create_c_ddu(dK: List[Expr], n: int) -> Array:
             for b in range(dim)
         ]
     )
+
+
+def create_c_ddd(c_ddu: Array, g_dd: Array) -> Array:
+    """
+    Create the c_ddd tensor using c_ddu and the metric tensor (to lower).
+
+    Definition: c_abc = g_cd * c_ab^d = c_ab^d * g_cd
+    """
+    return tc(tp(c_ddu, g_dd), (2, 4))
