@@ -79,3 +79,19 @@ def test_addition() -> None:
 
     # THEN
     assert str(expr) == "K₃ + K₇"
+
+
+def test_create_K_u_n_equals_2() -> None:
+    """Test the creation of the K_u tensor against hand calculations for n=2."""
+    # GIVEN
+    n = 2
+
+    # WHEN
+    K_u = sut.create_K_u(n)
+
+    # THEN
+    assert K_u.shape == (3,)
+
+    assert K_u[0] == sut.K(0)
+    assert K_u[1] == sut.K(1)
+    assert K_u[2] == sut.K(2)

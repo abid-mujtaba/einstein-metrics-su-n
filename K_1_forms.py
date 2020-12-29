@@ -1,6 +1,6 @@
 """Implement the Hermitian and traceless type K 1-forms."""
 
-from sympy import Expr
+from sympy import Array, Expr
 from sympy.printing import StrPrinter
 from typing import Any, Tuple
 
@@ -82,3 +82,8 @@ class K(Expr):  # type: ignore
     def __hash__(self) -> int:
         """Unique hash based on _hashable_contents(), mainly index."""
         return hash(self._hashable_content())
+
+
+def create_K_u(n: int) -> Array:
+    """Create K_u tensor of K 1-forms."""
+    return Array([K(i) for i in range(n**2 - 1)])
