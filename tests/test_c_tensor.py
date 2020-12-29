@@ -3,6 +3,7 @@
 from itertools import product
 from sympy import sqrt
 from sympy.abc import x, y
+from sympy.tensor import permutedims as pd
 
 from differentials import create_dK
 from K_1_forms import K
@@ -131,12 +132,19 @@ def test_create_c_ddu() -> None:
 
     # WHEN
     c_ddu = sut.create_c_ddu(dK, n)
+    antisymm_sum = c_ddu + pd(c_ddu, (1, 0, 2))
 
     # THEN
     # Verify that the only non-zero entries of the tensor occur for unique indices
     for i, j, k in product(range(dim), repeat=3):
         if c_ddu[i, j, k]:
             assert len(set((i,j,k))) == 3  # Unique indices
+
+    # Verify that c_ddu is antisymmetric in the first two indices
+    antisymm_sum = c_ddu + pd(c_ddu, (1, 0, 2))
+
+    for i, j, k in product(range(dim), repeat=3):
+        assert antisymm_sum[i,j,k] == 0
 
 
 def test_create_c_ddu_n_equals_2() -> None:
