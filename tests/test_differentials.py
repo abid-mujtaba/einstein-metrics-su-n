@@ -1,10 +1,11 @@
 """Test the differentials module."""
 
 from L_K_mappings import create_L2K
-from sympy import I, expand
+from sympy import I, expand, sqrt
 
 import differentials as sut
 
+from K_1_forms import K
 from L_1_forms import L
 from wedge import Wedge
 
@@ -79,3 +80,20 @@ def test_create_dK() -> None:
 
     # THEN
     assert len(dK) == n**2
+
+
+def test_create_dK_n_equals_2() -> None:
+    """Test the creation of dK against hand calculations for n = 2."""
+    # GIVEN
+    n = 2
+
+    # WHEN
+    dK = sut.create_dK(n)
+
+    # THEN
+    assert len(dK) == 4
+
+    assert dK[0] == -1 * sqrt(2) * Wedge(K(1), K(2))
+    assert dK[1] == sqrt(2) * Wedge(K(0), K(2))
+    assert dK[2] == -1 * Wedge(K(0), K(1)) / sqrt(2)
+    assert dK[3] == 0
