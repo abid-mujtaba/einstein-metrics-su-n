@@ -1,5 +1,6 @@
 """Test the c_tensor module."""
 
+from itertools import product
 from sympy import sqrt
 from sympy.abc import x, y
 
@@ -119,3 +120,44 @@ def test_coeff_n_equals_2() -> None:
     assert sut._coeff(dK, 0, 0, 2) == 0
     assert sut._coeff(dK, 0, 1, 1) == 0
     assert sut._coeff(dK, 0, 2, 2) == 0
+
+
+def test_create_c_ddu() -> None:
+    """Test the creation of the c_ddu tensor."""
+    # GIVEN
+    n = 3
+    dim = n**2 - 1
+    dK = create_dK(n)
+
+    # WHEN
+    c_ddu = sut.create_c_ddu(dK, n)
+
+    # THEN
+    # Verify that the only non-zero entries of the tensor occur for unique indices
+    for i, j, k in product(range(dim), repeat=3):
+        if c_ddu[i, j, k]:
+            assert len(set((i,j,k))) == 3  # Unique indices
+
+
+def test_create_c_ddu_n_equals_2() -> None:
+    """Test the creation of the c_ddu tensor against had calculations for n = 2."""
+    # GIVEN
+    n = 2
+    dK = create_dK(n)
+
+    # WHEN
+    c_ddu = sut.create_c_ddu(dK, n)
+
+    # THEN
+    assert c_ddu[1,2,0] == sqrt(2)
+    assert c_ddu[0,2,1] == -1 * sqrt(2)
+    assert c_ddu[0,1,2] == 1 / sqrt(2)
+
+    assert c_ddu[2,1,0] == -1 * sqrt(2)
+    assert c_ddu[2,0,1] == 1 * sqrt(2)
+    assert c_ddu[1,0,2] == -1 / sqrt(2)
+
+    assert c_ddu[0,0,0] == 0
+    assert c_ddu[0,0,1] == 0
+    assert c_ddu[0,1,0] == 0
+    assert c_ddu[0,1,1] == 0

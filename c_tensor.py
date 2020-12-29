@@ -7,7 +7,7 @@ Based on the definitions:
 2. c_abc = g_cd c_ab^d
 """
 
-from sympy import Expr, Add, Mul
+from sympy import Expr, Add, Mul, Array
 from typing import List
 
 from wedge import Wedge
@@ -50,3 +50,19 @@ def _coeff(dK: List[Expr], a: int, b: int, c: int) -> Expr:
 
     else:
         return -1 * _extract_coeff(dK[a], c, b)
+
+
+def create_c_ddu(dK: List[Expr], n: int) -> Array:
+    """
+    Create the c_ddu tensor using the mapping from dK to K 2-forms (Wedges).
+
+    Based on the definition: dK^a = -1/2 * c_bc^a K^b ^ K^c
+    """
+    dim = n ** 2 - 1
+
+    return Array(
+        [
+            [[-1 * _coeff(dK, a, b, c) for a in range(dim)] for c in range(dim)]
+            for b in range(dim)
+        ]
+    )
