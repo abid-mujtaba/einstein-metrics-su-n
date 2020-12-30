@@ -83,3 +83,51 @@ def test_create_w_dd_tensor_n_equals_2(c_ddd: Array, K_u: Array) -> None:
     assert w_dd[0,0] == 0
     assert w_dd[1,1] == 0
     assert w_dd[2,2] == 0
+
+
+@pytest.fixture(name="w_dd")
+def w_dd_fixture(c_ddd: Array, K_u: Array) -> None:
+    """Create w_dd for SU(n)."""
+    return sut.create_w_dd(c_ddd, K_u)
+
+
+@pytest.fixture(name="g_uu")
+def g_uu_fixture(n: int) -> Array:
+    """Create the inverse metric tensor."""
+    _, g_uu = create_metric(n)
+
+    return g_uu
+
+
+@pytest.mark.parametrize("n", (3,))
+def test_create_w_ud(n: int, w_dd: Array, g_uu: Array) -> None:
+    """General test of the creation of the w_dd tensor."""
+    # WHEN
+    w_ud = sut.create_w_ud(w_dd, g_uu)
+
+    # THEN: Verify that the w_dd contain K 1-forms. Verify that when i=j the value is 0
+    for i, j in product(range(n**2 - 1), repeat=2):
+        if i == j:
+            assert w_ud[i,j] == 0
+        else:
+            assert w_ud[i,j] == 0 or _K_in_expr(n, w_ud[i,j])
+
+
+@pytest.mark.parametrize("n", (2,))
+def test_create_w_ud_n_equals_2(w_dd: Array, g_uu: Array) -> None:
+    """Test the creation of w_du using hand calculations for n=2."""
+    # WHEN
+    w_ud = sut.create_w_ud(w_dd, g_uu)
+
+    # THEN
+    assert w_ud[0,1] == expand(w_dd[0,1] / x1)
+    assert w_ud[1,2] == expand(w_dd[1,2] / x2)
+    assert w_ud[2,0] == expand(w_dd[2,0] / x3)
+
+    assert w_ud[1,0] == expand(-1 * w_dd[0,1] / x2)
+    assert w_ud[2,1] == expand(-1 * w_dd[1,2] / x3)
+    assert w_ud[0,2] == expand(-1 * w_dd[2,0] / x1)
+
+    assert w_ud[0,0] == 0
+    assert w_ud[1,1] == 0
+    assert w_ud[2,2] == 0

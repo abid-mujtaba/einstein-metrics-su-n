@@ -13,3 +13,10 @@ def create_w_dd(c_ddd: Array, K_u: Array) -> Array:
     c_ddd = c_ddd.applyfunc(expand)
 
     return c_ddd
+
+
+def create_w_ud(w_dd: Array, g_uu: Array) -> Array:
+    """Create the w^a_b tensor by using the inverse metric."""
+    w_ud = tc(tp(g_uu, w_dd), (1,2)).applyfunc(expand)
+
+    return w_ud
