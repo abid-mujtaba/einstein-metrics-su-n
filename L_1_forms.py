@@ -6,12 +6,14 @@ the K_i which are created from their liner combination to be both hermitian and
 traceless.
 """
 
-from sympy import Expr
+from sympy import AtomicExpr, Expr
 from sympy.printing import StrPrinter
 from typing import Any, Tuple
 
 
-class L(Expr):  # type: ignore
+# Sub-class from AtomicExpr because the 1-forms are NOT expressions they are atomic
+# operands
+class L(AtomicExpr):  # type: ignore
     """
     L_A^B 1-forms for SU(n).
 

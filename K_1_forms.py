@@ -1,11 +1,13 @@
 """Implement the Hermitian and traceless type K 1-forms."""
 
-from sympy import Array, Expr
+from sympy import Array, Expr, AtomicExpr
 from sympy.printing import StrPrinter
 from typing import Any, Tuple
 
 
-class K(Expr):  # type: ignore
+# Sub-class from AtomicExpr because the 1-forms are NOT expressions they are atomic
+# operands
+class K(AtomicExpr):  # type: ignore
     """
     K_i 1-forms for SU(n).
 
