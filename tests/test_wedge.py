@@ -33,6 +33,30 @@ def test_zero_wedge_of_equal_1_forms() -> None:
     assert wedge == 0
 
 
+def test_zero_wedge_of_zero_left_operand() -> None:
+    """Taking a wedge where one of the operands is zero should return a 0."""
+    # GIVEN
+    k_1 = K(1)
+
+    # WHEN
+    wedge = sut.Wedge(0, k_1)
+
+    # THEN
+    assert wedge == 0
+
+
+def test_zero_wedge_of_zero_right_operand() -> None:
+    """Taking a wedge where one of the operands is zero should return a 0."""
+    # GIVEN
+    k_1 = K(1)
+
+    # WHEN
+    wedge = sut.Wedge(k_1, 0)
+
+    # THEN
+    assert wedge == 0
+
+
 def test_expand_K() -> None:
     """Test the expansion of K 1-form wedges over addition."""
     # GIVEN

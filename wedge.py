@@ -20,6 +20,9 @@ class Wedge(Expr):  # type: ignore
         if op1 == op2:  # Wedge product of an element with itself is zero by definition
             return Integer(0)
 
+        if op1 == 0 or op2 == 0:
+            return Integer(0)
+
         obj = Expr.__new__(cls, op1, op2)
         return obj
 
