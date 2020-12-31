@@ -19,7 +19,6 @@ class K(AtomicExpr):  # type: ignore
         """Create a new K_i 1-form which is a sub-class of sp.Expr."""
         return Expr.__new__(cls)
 
-
     __slots__ = ("index",)
 
     def __init__(self, index: int):
@@ -29,7 +28,6 @@ class K(AtomicExpr):  # type: ignore
         :param index: The index of the 1-form between 0 and (n² - 1)
         """
         self.index = index
-
 
     @property
     def is_number(self) -> bool:
@@ -61,7 +59,6 @@ class K(AtomicExpr):  # type: ignore
 
         return self.index > other.index
 
-
     _unicode_subscripts = ("₀", "₁", "₂", "₃", "₄", "₅", "₆", "₇", "₈", "₉")
 
     @classmethod
@@ -88,4 +85,4 @@ class K(AtomicExpr):  # type: ignore
 
 def create_K_u(n: int) -> Array:
     """Create K_u tensor of K 1-forms."""
-    return Array([K(i) for i in range(n**2 - 1)])
+    return Array([K(i) for i in range(n ** 2 - 1)])

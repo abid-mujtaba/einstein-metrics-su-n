@@ -31,7 +31,6 @@ class L(AtomicExpr):  # type: ignore
         """
         return Expr.__new__(cls)
 
-
     __slots__ = ("index_1", "index_2")
 
     def __init__(self, index_1: int, index_2: int):
@@ -43,7 +42,6 @@ class L(AtomicExpr):  # type: ignore
         """
         self.index_1 = index_1
         self.index_2 = index_2
-
 
     @property
     def is_number(self) -> bool:
@@ -83,7 +81,6 @@ class L(AtomicExpr):  # type: ignore
             return False
 
         return not (self < other)
-
 
     _unicode_subscripts = ("₀", "₁", "₂", "₃", "₄", "₅", "₆", "₇", "₈", "₉")
     _unicode_superscripts = ("⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹")
@@ -128,6 +125,7 @@ class L(AtomicExpr):  # type: ignore
 
 
 typeL = Tuple[Tuple[L, ...], ...]
+
 
 def create_L_1_forms(n: int) -> typeL:
     """Create the 2-array of the n² L 1-forms for SU(n)."""

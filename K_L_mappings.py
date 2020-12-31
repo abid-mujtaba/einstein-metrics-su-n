@@ -58,7 +58,11 @@ def _create_Q_matrix(n: int) -> Matrix:
         a = i + 1  # 1-indexed row number
         norm = 1 / sqrt(a + a ** 2)  # Normalization factor
 
-        return [*(norm for _ in range(a)), -a * norm, *(Integer(0) for _ in range(n - a - 1))]
+        return [
+            *(norm for _ in range(a)),
+            -a * norm,
+            *(Integer(0) for _ in range(n - a - 1)),
+        ]
 
     return Matrix(
         [
@@ -84,8 +88,4 @@ def _category_3_K2L(n: int) -> Iterator[Expr]:
 
 def create_K2L(n: int) -> List[Expr]:
     """Create mappings from the K to the L 1-forms for SU(n)."""
-    return [
-        *_category_1_K2L(n),
-        *_category_2_K2L(n),
-        *_category_3_K2L(n)
-    ]
+    return [*_category_1_K2L(n), *_category_2_K2L(n), *_category_3_K2L(n)]

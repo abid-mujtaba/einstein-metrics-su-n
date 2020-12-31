@@ -21,7 +21,9 @@ def test_dL() -> None:
     result = sut.dL(a, b, n)
 
     # THEN
-    assert result == I * (Wedge(L(1,0), L(0,2)) + Wedge(L(1,1), L(1,2)) + Wedge(L(1,2), L(2,2)))
+    assert result == I * (
+        Wedge(L(1, 0), L(0, 2)) + Wedge(L(1, 1), L(1, 2)) + Wedge(L(1, 2), L(2, 2))
+    )
 
 
 def test_differentiate_sum_of_L_1_forms_single() -> None:
@@ -59,7 +61,7 @@ def test_convert_L_2_forms() -> None:
     """Test the conversion of L 2-forms (via wedge) to wedged K 1-forms."""
     # GIVEN
     n = 2
-    wedge = Wedge(L(0,1), L(1,0))
+    wedge = Wedge(L(0, 1), L(1, 0))
 
     # L2K = create_L2K(n)
 
@@ -79,7 +81,7 @@ def test_create_dK() -> None:
     dK = sut.create_dK(n)
 
     # THEN
-    assert len(dK) == n**2
+    assert len(dK) == n ** 2
 
 
 def test_create_dK_n_equals_2() -> None:

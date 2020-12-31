@@ -134,14 +134,14 @@ def test_mapping_inversion_complete() -> None:
     K2L = create_K2L(n)
     L2K = sut.create_L2K(n)
 
-    k = [K2L[i] for i in range(n**2)]
-    maps = {L(i,j): L2K[i][j] for i, j in product(range(n), repeat=2)}
+    k = [K2L[i] for i in range(n ** 2)]
+    maps = {L(i, j): L2K[i][j] for i, j in product(range(n), repeat=2)}
 
     # WHEN
     k_inv = [e.subs(maps) for e in k]
 
     # THEN
-    for i in range(n**2):
+    for i in range(n ** 2):
         assert expand(k_inv[i]) == K(i)
 
 

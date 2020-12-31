@@ -11,7 +11,7 @@ def test_creation_of_L_1_forms() -> None:
     In particular them being sub-class of Differential.
     """
     # WHEN
-    l_12 = sut.L(1,2)
+    l_12 = sut.L(1, 2)
 
     # THEN
     assert isinstance(l_12, sp.Expr)
@@ -22,7 +22,7 @@ def test_creation_of_L_1_forms() -> None:
 def test_L_1_form_representation() -> None:
     """Should be represented with the indices correctly lowered and raised."""
     # WHEN
-    l_12 = sut.L(1,2)
+    l_12 = sut.L(1, 2)
 
     # THEN
     assert repr(l_12) == "L₁²"
@@ -42,8 +42,8 @@ def test_L_1_form_representation_higher_numbers() -> None:
 def test_L_1_form_equality() -> None:
     """Equal only when they have the same indices."""
     # GIVEN
-    a = sut.L(1,2)
-    b = sut.L(1,2)
+    a = sut.L(1, 2)
+    b = sut.L(1, 2)
 
     # THEN
     assert a == b
@@ -52,8 +52,8 @@ def test_L_1_form_equality() -> None:
 def test_L_1_form_inequality() -> None:
     """Equal only when they have the same indices."""
     # GIVEN
-    a = sut.L(1,2)
-    b = sut.L(2,3)
+    a = sut.L(1, 2)
+    b = sut.L(2, 3)
 
     # THEN
     assert a != b
@@ -62,8 +62,8 @@ def test_L_1_form_inequality() -> None:
 def test_L_1_form_hash_equality() -> None:
     """Equal L 1-forms have the same hash."""
     # GIVEN
-    a = sut.L(1,2)
-    b = sut.L(1,2)
+    a = sut.L(1, 2)
+    b = sut.L(1, 2)
 
     # THEN
     assert hash(a) == hash(b)
@@ -72,8 +72,8 @@ def test_L_1_form_hash_equality() -> None:
 def test_L_1_form_hash_inequality() -> None:
     """Equal L 1-forms have the same hash."""
     # GIVEN
-    a = sut.L(1,2)
-    b = sut.L(2,3)
+    a = sut.L(1, 2)
+    b = sut.L(2, 3)
 
     # THEN
     assert hash(a) != hash(b)
@@ -97,8 +97,8 @@ def test_L_1_form_ordering() -> None:
 def test_addition() -> None:
     """Good test of sympy functionality, ability to add to create a new expression."""
     # GIVEN
-    a = sut.L(1,2)
-    b = sut.L(2,3)
+    a = sut.L(1, 2)
+    b = sut.L(2, 3)
 
     # WHEN
     expr = a + b

@@ -24,8 +24,8 @@ def test_category_1_K2L() -> None:
     # THEN
     assert len(K2L) == m
 
-    assert K2L[0] == L(0,1) + L(1,0)
-    assert K2L[-1] == L(2,1) + L(1,2)
+    assert K2L[0] == L(0, 1) + L(1, 0)
+    assert K2L[-1] == L(2, 1) + L(1, 2)
 
 
 def test_category_2_K2L() -> None:
@@ -40,8 +40,8 @@ def test_category_2_K2L() -> None:
     # THEN
     assert len(K2L) == m
 
-    assert K2L[0] == I * (L(0,1) - L(1,0))
-    assert K2L[-1] == I * (L(1,2) - L(2,1))
+    assert K2L[0] == I * (L(0, 1) - L(1, 0))
+    assert K2L[-1] == I * (L(1, 2) - L(2, 1))
 
 
 def test_P_matrix() -> None:
@@ -57,7 +57,7 @@ def test_P_matrix() -> None:
     assert P.shape == (n, n)
 
     # Diagnoal entries must equal 2/(n - 1) - 1 (except for the last)
-    assert P[0,0] == Rational(2, n - 1) - 1
+    assert P[0, 0] == Rational(2, n - 1) - 1
     assert float(P[0, 0]) == pytest.approx(-0.33333333)
 
     # Off-diagnoal entries must equal 2/(n - 1) (except for the last row and col)
@@ -65,15 +65,15 @@ def test_P_matrix() -> None:
     assert float(P[0, 1]) == pytest.approx(0.666666667)
 
     # Last row and column must have zeros (except for the last diagonal entry)
-    assert P[0,3] == 0
-    assert P[3,0] == 0
+    assert P[0, 3] == 0
+    assert P[3, 0] == 0
 
     # Last diagonal entry must equal 1
-    assert P[3,3] == 1
+    assert P[3, 3] == 1
 
     # Test orthonormality of the rows of the P matrix
-    row_1 = P[0,:]
-    row_2 = P[1,:]
+    row_1 = P[0, :]
+    row_2 = P[1, :]
 
     assert row_1.dot(row_1) == 1
     assert row_1.dot(row_2) == 0
@@ -91,13 +91,13 @@ def test_Q_matrix() -> None:
     assert isinstance(Q, Matrix)
     assert Q.shape == (n, n)
 
-    assert Q[0,0] == 1 / sqrt(2)
-    assert Q[0,1] == - 1 / sqrt(2)
-    assert Q[0,2] == 0
+    assert Q[0, 0] == 1 / sqrt(2)
+    assert Q[0, 1] == -1 / sqrt(2)
+    assert Q[0, 2] == 0
 
-    assert Q[1,0] == 1 / sqrt(6)
-    assert Q[1,2] == - 2 / sqrt(6)
-    assert Q[1,3] == 0
+    assert Q[1, 0] == 1 / sqrt(6)
+    assert Q[1, 2] == -2 / sqrt(6)
+    assert Q[1, 3] == 0
 
     assert Q[n - 1, 0] == 1 / sqrt(n)
     assert Q[n - 1, n - 1] == 1 / sqrt(n)
@@ -127,7 +127,7 @@ def test_category_3_K2L() -> None:
 
     # Each entry (K 1-form) must have contributions from all the diagonal L 1-forms
     for i, j in zip(range(n), range(n)):
-        assert is_in_expr(L(i,i), K2L[j])
+        assert is_in_expr(L(i, i), K2L[j])
 
 
 def test_create_K2L() -> None:
@@ -139,7 +139,7 @@ def test_create_K2L() -> None:
     K2L = sut.create_K2L(n)
 
     # THEN
-    assert len(K2L) == n**2
+    assert len(K2L) == n ** 2
 
 
 def test_create_K2L_n_equals_2() -> None:
@@ -153,7 +153,7 @@ def test_create_K2L_n_equals_2() -> None:
     # THEN
     assert len(K2L) == 4
 
-    assert K2L[0] == L(0,1) + L(1,0)
-    assert K2L[1] == I * (L(0, 1) - L(1,0))
-    assert K2L[2] == expand((L(0,0) - L(1,1)) / sqrt(2))
-    assert K2L[3] == expand((L(0,0) + L(1,1)) / sqrt(2))
+    assert K2L[0] == L(0, 1) + L(1, 0)
+    assert K2L[1] == I * (L(0, 1) - L(1, 0))
+    assert K2L[2] == expand((L(0, 0) - L(1, 1)) / sqrt(2))
+    assert K2L[3] == expand((L(0, 0) + L(1, 1)) / sqrt(2))

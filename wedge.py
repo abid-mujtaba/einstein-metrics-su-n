@@ -16,6 +16,7 @@ class Wedge(Expr):  # type: ignore
     Focuses on just 2-forms with automatic ordering to ensure anti-symmetric
     cancellation by default.
     """
+
     def __new__(cls, op1: Expr, op2: Expr) -> Expr:
         if op1 == op2:  # Wedge product of an element with itself is zero by definition
             return Integer(0)
@@ -28,6 +29,7 @@ class Wedge(Expr):  # type: ignore
 
     def _sympystr(self, printer: StrPrinter, **kwargs: Any) -> str:
         """Custom printer for the Wedge operation."""
+
         def s(op: Expr) -> str:
             """Convert operand of Wedge to string, adding parentheses if of type Add."""
             if isinstance(op, Add):
@@ -44,6 +46,7 @@ def expand_K(expr: Expr) -> Expr:
 
     e.g. Wedge(K_1, K_2 + K_3) => Wedge(K_1, K_2) + Wedge(K_1, K_3)
     """
+
     def _collect_add(e: Add) -> Add:
         """
         Collect Add over Add into a single Add.
@@ -93,6 +96,7 @@ def extract_factor_K(expr: Expr) -> Expr:
 
     e.g. K(1) ^ (2 * K(2)) => 2 * (K(1) ^ K(2))
     """
+
     def _extract(wedge: Wedge) -> Expr:
         """Extract multiplicative factors of K 1-forms from Wedge."""
         op1, op2 = wedge.args
@@ -130,6 +134,7 @@ def antisymm(expr: Expr) -> Expr:
 
     e.g. K(2) ^ K(1) => - (K(1) ^ K(2))
     """
+
     def _antisymm(wedge: Wedge) -> Expr:
         """Carry out antisymmetric simplification of a Wedge."""
         op1, op2 = wedge.args
