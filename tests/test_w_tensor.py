@@ -48,6 +48,21 @@ def _K_in_expr(n: int, expr: Expr) -> bool:
     return False
 
 
+def _Wedge_of_K_in_expr(n: int, expr: Expr) -> bool:
+    """Verify that there is a Wedge of K 1-forms in the expression."""
+    if isinstance(expr, Wedge):
+        op1, op2 = expr.args
+
+        return (isinstance(op1, K) and 0 <= op1.index < n ** 2) and (
+            isinstance(op2, K) and 0 <= op2.index < n ** 2
+        )
+
+    if expr.args:
+        return any(_Wedge_of_K_in_expr(n, arg) for arg in expr.args)
+
+    return False
+
+
 @pytest.mark.parametrize("n", (3,))
 def test_create_w_dd(n: int, c_ddd: Array, K_u: Array) -> None:
     """General test of the creation of the w_dd tensor."""
@@ -140,6 +155,21 @@ def test_create_w_ud_n_equals_2(w_dd: Array, g_uu: Array) -> None:
 def w_ud_fixture(w_dd: Array, g_uu: Array) -> Array:
     """Create w_ud for testing."""
     return sut.create_w_ud(w_dd, g_uu)
+
+
+@pytest.mark.parametrize("n", (3,))
+def test_create_w_wedge(n: int, w_ud: Array) -> None:
+    """Test the creation of the w_wedge tensor."""
+    # WHEN
+    w_wedge = sut.create_w_wedge(n, w_ud)
+
+    # THEN
+    for i, j in product(range(n ** 2 - 1), repeat=2):
+        expr = w_wedge[i, j]
+        if i == j:
+            assert expr == 0
+        else:
+            assert expr == 0 or _Wedge_of_K_in_expr(n, expr)
 
 
 @pytest.mark.parametrize("n", (2,))
