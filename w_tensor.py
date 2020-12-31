@@ -27,7 +27,7 @@ def create_w_ud(w_dd: Array, g_uu: Array) -> Array:
     return w_ud
 
 
-def create_w_wedge(n: int, w_ud: Array) -> Array:
+def create_w_wedge_ud(n: int, w_ud: Array) -> Array:
     """Create the w^a_c ^ w_c^b wedge with the c being summed over."""
     dim = n ** 2 - 1
 

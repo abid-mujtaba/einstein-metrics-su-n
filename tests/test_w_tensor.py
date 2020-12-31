@@ -91,14 +91,14 @@ def test_create_w_ud_n_equals_2(w_dd: Array, g_uu: Array) -> None:
 
 
 @pytest.mark.parametrize("n", (3,))
-def test_create_w_wedge(n: int, w_ud: Array) -> None:
+def test_create_w_wedge_ud(n: int, w_ud: Array) -> None:
     """Test the creation of the w_wedge tensor."""
     # WHEN
-    w_wedge = sut.create_w_wedge(n, w_ud)
+    w_wedge_ud = sut.create_w_wedge_ud(n, w_ud)
 
     # THEN
     for i, j in product(range(n ** 2 - 1), repeat=2):
-        expr = w_wedge[i, j]
+        expr = w_wedge_ud[i, j]
         if i == j:
             assert expr == 0
         else:
@@ -106,26 +106,26 @@ def test_create_w_wedge(n: int, w_ud: Array) -> None:
 
 
 @pytest.mark.parametrize("n", (2,))
-def test_create_w_wedge_n_equals_w(n: int, w_ud: Array) -> None:
-    """Test the creation of the w_wedge against hand calculations for n=2."""
+def test_create_w_wedge_ud_n_equals_w(n: int, w_ud: Array) -> None:
+    """Test the creation of the w_wedge_ud tensor against hand calculations for n=2."""
     # WHEN
-    w_wedge = sut.create_w_wedge(n, w_ud)
+    w_wedge_ud = sut.create_w_wedge_ud(n, w_ud)
 
     # THEN
     for i in range(n ** 2 - 1):
-        assert w_wedge[i, i] == 0  # Should be zero when both indices are equal
+        assert w_wedge_ud[i, i] == 0  # Should be zero when both indices are equal
 
     e_01 = (2 * x1 - 2 * x2 + x3) * (2 * x1 - 2 * x2 - x3)
     e_12 = (2 * x1 + 2 * x2 - x3) * (2 * x1 - 2 * x2 + x3)
     e_20 = (2 * x1 - 2 * x2 - x3) * (2 * x1 + 2 * x2 - x3)
 
-    assert expand(w_wedge[0, 1]) == expand(e_01 / (8 * x1 * x3) * Wedge(K(0), K(1)))
-    assert expand(w_wedge[1, 2]) == expand(-e_12 / (8 * x1 * x2) * Wedge(K(1), K(2)))
-    assert expand(w_wedge[2, 0]) == expand(-e_20 / (8 * x2 * x3) * Wedge(K(0), K(2)))
+    assert expand(w_wedge_ud[0, 1]) == expand(e_01 / (8 * x1 * x3) * Wedge(K(0), K(1)))
+    assert expand(w_wedge_ud[1, 2]) == expand(-e_12 / (8 * x1 * x2) * Wedge(K(1), K(2)))
+    assert expand(w_wedge_ud[2, 0]) == expand(-e_20 / (8 * x2 * x3) * Wedge(K(0), K(2)))
 
-    assert expand(w_wedge[1, 0]) == expand(-e_01 / (8 * x2 * x3) * Wedge(K(0), K(1)))
-    assert expand(w_wedge[2, 1]) == expand(e_12 / (8 * x1 * x3) * Wedge(K(1), K(2)))
-    assert expand(w_wedge[0, 2]) == expand(e_20 / (8 * x1 * x2) * Wedge(K(0), K(2)))
+    assert expand(w_wedge_ud[1, 0]) == expand(-e_01 / (8 * x2 * x3) * Wedge(K(0), K(1)))
+    assert expand(w_wedge_ud[2, 1]) == expand(e_12 / (8 * x1 * x3) * Wedge(K(1), K(2)))
+    assert expand(w_wedge_ud[0, 2]) == expand(e_20 / (8 * x1 * x2) * Wedge(K(0), K(2)))
 
 
 @pytest.mark.parametrize("n", (2,))
