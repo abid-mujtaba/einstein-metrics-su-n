@@ -8,7 +8,7 @@ from c_tensor import create_c_ddd, create_c_ddu
 from differentials import create_dK
 from K_1_forms import create_K_u
 from metric import create_metric
-from w_tensor import create_w_dd, create_w_ud
+from w_tensor import create_w_dd, create_w_ud, create_w_wedge_ud, create_dw_ud
 
 
 @pytest.fixture(name="dK")
@@ -50,3 +50,15 @@ def g_uu_fixture(n: int) -> Array:
 def w_ud_fixture(w_dd: Array, g_uu: Array) -> Array:
     """Create w_ud for testing."""
     return create_w_ud(w_dd, g_uu)
+
+
+@pytest.fixture(name="dw_ud")
+def dw_ud_fixture(n: int, w_ud: Array, dK: List[Expr]) -> Array:
+    """Create dw_ud for testing."""
+    return create_dw_ud(w_ud, dK)
+
+
+@pytest.fixture(name="w_wedge_ud")
+def w_wedge_ud_fixture(n: int, w_ud: Array) -> Array:
+    """Create w_wedge_ud for testing."""
+    return create_w_wedge_ud(n, w_ud)
