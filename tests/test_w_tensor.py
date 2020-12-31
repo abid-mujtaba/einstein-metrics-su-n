@@ -10,35 +10,10 @@ from typing import List
 
 from K_1_forms import K
 from metric import x1, x2, x3
+from utilities import is_K_in_expr, is_Wedge_of_K_in_expr
 from wedge import Wedge
 
 import w_tensor as sut
-
-
-def _K_in_expr(n: int, expr: Expr) -> bool:
-    """Verify that there is a K 1-form in the expression."""
-    if isinstance(expr, K):
-        return 0 <= expr.index < n ** 2
-
-    if expr.args:
-        return any(_K_in_expr(n, arg) for arg in expr.args)
-
-    return False
-
-
-def _Wedge_of_K_in_expr(n: int, expr: Expr) -> bool:
-    """Verify that there is a Wedge of K 1-forms in the expression."""
-    if isinstance(expr, Wedge):
-        op1, op2 = expr.args
-
-        return (isinstance(op1, K) and 0 <= op1.index < n ** 2) and (
-            isinstance(op2, K) and 0 <= op2.index < n ** 2
-        )
-
-    if expr.args:
-        return any(_Wedge_of_K_in_expr(n, arg) for arg in expr.args)
-
-    return False
 
 
 @pytest.mark.parametrize("n", (3,))
@@ -51,7 +26,7 @@ def test_create_w_dd(n: int, c_ddd: Array, K_u: Array) -> None:
     # THEN: Verify antisymmetry. Verify that the w_dd contain K 1-forms
     for i, j in product(range(n ** 2 - 1), repeat=2):
         assert antisymm_sum[i, j] == 0
-        assert w_dd[i, j] == 0 or _K_in_expr(n, w_dd[i, j])
+        assert w_dd[i, j] == 0 or is_K_in_expr(n, w_dd[i, j])
 
 
 @pytest.mark.parametrize("n", (2,))
@@ -92,7 +67,7 @@ def test_create_w_ud(n: int, w_dd: Array, g_uu: Array) -> None:
         if i == j:
             assert w_ud[i, j] == 0
         else:
-            assert w_ud[i, j] == 0 or _K_in_expr(n, w_ud[i, j])
+            assert w_ud[i, j] == 0 or is_K_in_expr(n, w_ud[i, j])
 
 
 @pytest.mark.parametrize("n", (2,))
@@ -127,7 +102,7 @@ def test_create_w_wedge(n: int, w_ud: Array) -> None:
         if i == j:
             assert expr == 0
         else:
-            assert expr == 0 or _Wedge_of_K_in_expr(n, expr)
+            assert expr == 0 or is_Wedge_of_K_in_expr(n, expr)
 
 
 @pytest.mark.parametrize("n", (2,))
@@ -191,7 +166,7 @@ def test_create_dw_ud(n: int, w_ud: Array, dK: List[Expr]) -> None:
         if i == j:
             assert expr == 0
         else:
-            assert expr == 0 or _Wedge_of_K_in_expr(n, expr)
+            assert expr == 0 or is_Wedge_of_K_in_expr(n, expr)
 
 
 @pytest.mark.parametrize("n", (2,))
