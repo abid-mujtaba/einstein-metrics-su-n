@@ -8,34 +8,11 @@ from sympy.abc import a, b
 from sympy.tensor import permutedims as pd
 from typing import List
 
-from c_tensor import create_c_ddu, create_c_ddd
-from differentials import create_dK
-from K_1_forms import create_K_u, K
-from metric import create_metric, x1, x2, x3
+from K_1_forms import K
+from metric import x1, x2, x3
 from wedge import Wedge
 
 import w_tensor as sut
-
-
-@pytest.fixture(name="dK")
-def dK_fixture(n: int) -> List[Expr]:
-    """Create the list of dK (differential of the K 1-forms)."""
-    return create_dK(n)
-
-
-@pytest.fixture(name="c_ddd")
-def c_ddd_fixture(n: int, dK: List[Expr]) -> Array:
-    """Create the c_ddd tensor for SU(n)."""
-    g_dd, _ = create_metric(n)
-    c_ddu = create_c_ddu(dK, n)
-
-    return create_c_ddd(c_ddu, g_dd)
-
-
-@pytest.fixture(name="K_u")
-def dK_u_fixture(n: int) -> Array:
-    """Create the dK_u tensor of the differentials of the K 1-forms."""
-    return create_K_u(n)
 
 
 def _K_in_expr(n: int, expr: Expr) -> bool:
@@ -104,20 +81,6 @@ def test_create_w_dd_tensor_n_equals_2(c_ddd: Array, K_u: Array) -> None:
     assert w_dd[2, 2] == 0
 
 
-@pytest.fixture(name="w_dd")
-def w_dd_fixture(c_ddd: Array, K_u: Array) -> Array:
-    """Create w_dd for SU(n)."""
-    return sut.create_w_dd(c_ddd, K_u)
-
-
-@pytest.fixture(name="g_uu")
-def g_uu_fixture(n: int) -> Array:
-    """Create the inverse metric tensor."""
-    _, g_uu = create_metric(n)
-
-    return g_uu
-
-
 @pytest.mark.parametrize("n", (3,))
 def test_create_w_ud(n: int, w_dd: Array, g_uu: Array) -> None:
     """General test of the creation of the w_dd tensor."""
@@ -150,12 +113,6 @@ def test_create_w_ud_n_equals_2(w_dd: Array, g_uu: Array) -> None:
     assert w_ud[0, 0] == 0
     assert w_ud[1, 1] == 0
     assert w_ud[2, 2] == 0
-
-
-@pytest.fixture(name="w_ud")
-def w_ud_fixture(w_dd: Array, g_uu: Array) -> Array:
-    """Create w_ud for testing."""
-    return sut.create_w_ud(w_dd, g_uu)
 
 
 @pytest.mark.parametrize("n", (3,))
