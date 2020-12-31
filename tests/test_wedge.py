@@ -1,7 +1,7 @@
 """Test the wrapper Wedge class in the wedge module."""
 
 from sympy import expand
-from sympy.abc import a, b
+from sympy.abc import a, b, x, y
 
 import wedge as sut
 
@@ -169,3 +169,90 @@ def test_antisymm_complicated_expression() -> None:
 
     # THEN
     assert result == a - b * sut.Wedge(k_1, k_2)
+
+
+def test_extract_wedge_coeff_just_matching_wedge() -> None:
+    """Extract coeff from an expression consisting only of a matching wedge."""
+    # GIVEN
+    b = 1
+    c = 2
+
+    expr = sut.Wedge(K(b), K(c))
+
+    # WHEN
+    result = sut.extract_wedge_coeff(expr, b, c)
+
+    # THEN
+    assert result == 1
+
+
+def test_extract_wedge_coeff_just_not_matching_wedge() -> None:
+    """Extract coeff from an expression consisting only of a non-matching wedge."""
+    # GIVEN
+    b = 1
+    c = 2
+
+    expr = sut.Wedge(K(b), K(c))
+
+    # WHEN
+    result = sut.extract_wedge_coeff(expr, 0, 1)
+
+    # THEN
+    assert result == 0
+
+
+def test_extract_wedge_coeff_matching_wedge_with_multiplicative_factor() -> None:
+    """Extract coeff from an expression consisting of a matching wedge with a factor."""
+    # GIVEN
+    b = 1
+    c = 2
+
+    expr = x * sut.Wedge(K(b), K(c))
+
+    # WHEN
+    result = sut.extract_wedge_coeff(expr, b, c)
+
+    # THEN
+    assert result == x
+
+
+def test_extract_wedge_coeff_non_matching_wedge_with_multiplicative_factor() -> None:
+    """Extract coeff from an expression consisting of a non-matching wedge with a factor."""
+    # GIVEN
+    b = 1
+    c = 2
+
+    expr = x * sut.Wedge(K(b), K(c))
+
+    # WHEN
+    result = sut.extract_wedge_coeff(expr, 0, 1)
+
+    # THEN
+    assert result == 0
+
+
+def test_extract_wedge_coeff_matching_wedge_in_linear_combination() -> None:
+    """Extract coeff from a linear combination containing a matching wedge."""
+    # GIVEN
+    b = 1
+    c = 2
+
+    expr = x * sut.Wedge(K(0), K(1)) + y * sut.Wedge(K(b), K(c))
+
+    # WHEN
+    result = sut.extract_wedge_coeff(expr, b, c)
+
+    # THEN
+    assert result == y
+
+
+def test_extract_wedge_coeff_non_matching_wedge_in_linear_combination() -> None:
+    """Extract coeff from a linear combination containing a non-matching wedge."""
+    # GIVEN
+    expr = x * sut.Wedge(K(0), K(1)) + y * sut.Wedge(K(1), K(2))
+
+    # WHEN
+    result = sut.extract_wedge_coeff(expr, 0, 2)
+
+    # THEN
+    assert result == 0

@@ -11,28 +11,8 @@ from sympy import Expr, Add, Mul, Array
 from sympy.tensor import tensorcontraction as tc, tensorproduct as tp
 from typing import List
 
-from wedge import Wedge
+from wedge import extract_wedge_coeff
 from K_1_forms import K
-
-
-def _extract_coeff(expr: Expr, b: int, c: int) -> Expr:
-    """Extract coefficient of K^b ∧ K^c from wedge expression."""
-    # To that end we will substitute K(b) ^ K(c) = 1 and replace all other wedges
-    # with 0 and simplify the expression
-    def sub(e: Expr) -> Expr:
-        """Recurse into expression substituting the Wedges with 1 or 0 based on indices."""
-        if isinstance(e, Wedge):  # Substitute
-            i1, i2 = (_.index for _ in e.args)
-
-            return 1 if (i1, i2) == (b, c) else 0
-
-        if e.args:  # Descend and recurse
-            args = (sub(arg) for arg in e.args)
-            return e.func(*args)
-
-        return e  # Return (immutable) leafs as is
-
-    return sub(expr)
 
 
 def _coeff(dK: List[Expr], a: int, b: int, c: int) -> Expr:
@@ -47,10 +27,10 @@ def _coeff(dK: List[Expr], a: int, b: int, c: int) -> Expr:
         return 0
 
     if b < c:
-        return _extract_coeff(dK[a], b, c)
+        return extract_wedge_coeff(dK[a], b, c)
 
     else:
-        return -1 * _extract_coeff(dK[a], c, b)
+        return -1 * extract_wedge_coeff(dK[a], c, b)
 
 
 def create_c_ddu(dK: List[Expr], n: int) -> Array:
