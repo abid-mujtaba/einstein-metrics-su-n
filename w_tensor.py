@@ -1,5 +1,6 @@
 """Implement the 𝜔-tensor, its wedge and its differential."""
 
+from functools import partial
 from sympy import Array, S, expand, factor, Expr
 from sympy.tensor import permutedims as pd, tensorcontraction as tc, tensorproduct as tp
 from typing import List
@@ -65,3 +66,10 @@ def _differential_of_K_expr(dK: List[Expr], expr: Expr) -> Expr:
         return expr.func(*(_differential_of_K_expr(dK, arg) for arg in args))
 
     return expr  # Return atoms as is
+
+
+def create_dw_ud(w_ud: Array, dK: List[Expr]) -> Array:
+    """Create the differential of the w_ud tensor."""
+    differentiate = partial(_differential_of_K_expr, dK)
+
+    return w_ud.applyfunc(differentiate)
