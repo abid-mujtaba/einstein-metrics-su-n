@@ -222,6 +222,21 @@ def test_differential_of_K_in_linear_sum(dK: List[Expr]) -> None:
     assert result == a * dK[0] + b * dK[1]
 
 
+@pytest.mark.parametrize("n", (3,))
+def test_create_dw_ud(n: int, w_ud: Array, dK: List[Expr]) -> None:
+    """Test the creation of the dw_ud tensor."""
+    # WHEN
+    dw_ud = sut.create_dw_ud(w_ud, dK)
+
+    # THEN
+    for i, j in product(range(n ** 2 - 1), repeat=2):
+        expr = dw_ud[i, j]
+        if i == j:
+            assert expr == 0
+        else:
+            assert expr == 0 or _Wedge_of_K_in_expr(n, expr)
+
+
 @pytest.mark.parametrize("n", (2,))
 def test_create_dw_ud_n_equals_2(n: int, w_ud: Array, dK: List[Expr]) -> None:
     """Test the creation of dw_ud against hand calculations for n=2."""
