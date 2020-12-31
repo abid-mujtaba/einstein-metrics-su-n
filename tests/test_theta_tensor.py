@@ -20,12 +20,12 @@ def test_create_theta_ud(n: int, dw_ud: Array, w_wedge_ud: Array) -> None:
     theta_ud = sut.create_theta_ud(dw_ud, w_wedge_ud)
 
     # THEN
-    for i, j in product(range(n**2 - 1), repeat=2):
-        expr = theta_ud[i,j]
+    for i, j in product(range(n ** 2 - 1), repeat=2):
+        expr = theta_ud[i, j]
         if i == j:
             assert expr == 0
         else:
-            assert expr == theta_ud[i,j] == 0 or is_Wedge_of_K_in_expr(n, expr)
+            assert expr == theta_ud[i, j] == 0 or is_Wedge_of_K_in_expr(n, expr)
 
 
 @pytest.mark.parametrize("n", (2,))
@@ -47,14 +47,14 @@ def test_create_theta_ud_n_equals_2(n: int, dw_ud: Array, w_wedge_ud: Array) -> 
     )
     assert expand(theta_ud[1, 2]) == expand(
         (
-            - (2 * x1 - 2 * x2 - x3) / (2 * x2)
+            -(2 * x1 - 2 * x2 - x3) / (2 * x2)
             - (2 * x1 + 2 * x2 - x3) * (2 * x1 - 2 * x2 + x3) / (8 * x1 * x2)
         )
         * Wedge(K(1), K(2))
     )
     assert expand(theta_ud[2, 0]) == expand(
         (
-            - (2 * x1 - 2 * x2 + x3) / (2 * x3)
+            -(2 * x1 - 2 * x2 + x3) / (2 * x3)
             - (2 * x1 - 2 * x2 - x3) * (2 * x1 + 2 * x2 - x3) / (8 * x2 * x3)
         )
         * Wedge(K(0), K(2))
@@ -62,7 +62,7 @@ def test_create_theta_ud_n_equals_2(n: int, dw_ud: Array, w_wedge_ud: Array) -> 
 
     assert expand(theta_ud[1, 0]) == expand(
         (
-            - (2 * x1 + 2 * x2 - x3) / (4 * x2)
+            -(2 * x1 + 2 * x2 - x3) / (4 * x2)
             - (2 * x1 - 2 * x2 + x3) * (2 * x1 - 2 * x2 - x3) / (8 * x2 * x3)
         )
         * Wedge(K(0), K(1))
