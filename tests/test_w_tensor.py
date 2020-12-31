@@ -4,6 +4,7 @@ import pytest
 
 from itertools import product
 from sympy import sqrt, Array, Expr, expand
+from sympy.abc import a, b
 from sympy.tensor import permutedims as pd
 from typing import List
 
@@ -193,3 +194,29 @@ def test_create_w_wedge_n_equals_w(n: int, w_ud: Array) -> None:
     assert expand(w_wedge[1, 0]) == expand(-e_01 / (8 * x2 * x3) * Wedge(K(0), K(1)))
     assert expand(w_wedge[2, 1]) == expand(e_12 / (8 * x1 * x3) * Wedge(K(1), K(2)))
     assert expand(w_wedge[0, 2]) == expand(e_20 / (8 * x1 * x2) * Wedge(K(0), K(2)))
+
+
+@pytest.mark.parametrize("n", (2,))
+def test_differential_of_K_in_expr_basic(dK: List[Expr]) -> None:
+    """Verify the utility function using a simple K 1-form."""
+    # GIVEN
+    k_0 = K(0)
+
+    # WHEN
+    result = sut._differential_of_K_expr(dK, k_0)
+
+    # THEN
+    assert result == dK[0]
+
+
+@pytest.mark.parametrize("n", (2,))
+def test_differential_of_K_in_linear_sum(dK: List[Expr]) -> None:
+    """Verify the utility function using a simple K 1-form."""
+    # GIVEN
+    expr = a * K(0) + b * K(1)
+
+    # WHEN
+    result = sut._differential_of_K_expr(dK, expr)
+
+    # THEN
+    assert result == a * dK[0] + b * dK[1]
