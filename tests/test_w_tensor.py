@@ -220,3 +220,34 @@ def test_differential_of_K_in_linear_sum(dK: List[Expr]) -> None:
 
     # THEN
     assert result == a * dK[0] + b * dK[1]
+
+
+@pytest.mark.parametrize("n", (2,))
+def test_create_dw_ud_n_equals_2(n: int, w_ud: Array, dK: List[Expr]) -> None:
+    """Test the creation of dw_ud against hand calculations for n=2."""
+    # WHEN
+    dw_ud = sut.create_dw_ud(w_ud, dK)
+
+    # THEN
+    for i in range(n ** 2 - 1):  # diagonal entries should be zero
+        assert dw_ud[i, i] == 0
+
+    assert expand(dw_ud[0, 1]) == expand(
+        1 / (4 * x1) * (2 * x1 + 2 * x2 - x3) * Wedge(K(0), K(1))
+    )
+    assert expand(dw_ud[1, 2]) == expand(
+        -1 / (2 * x2) * (2 * x1 - 2 * x2 - x3) * Wedge(K(1), K(2))
+    )
+    assert expand(dw_ud[2, 0]) == expand(
+        -1 / (2 * x3) * (2 * x1 - 2 * x2 + x3) * Wedge(K(0), K(2))
+    )
+
+    assert expand(dw_ud[1, 0]) == expand(
+        -1 / (4 * x2) * (2 * x1 + 2 * x2 - x3) * Wedge(K(0), K(1))
+    )
+    assert expand(dw_ud[2, 1]) == expand(
+        1 / (2 * x3) * (2 * x1 - 2 * x2 - x3) * Wedge(K(1), K(2))
+    )
+    assert expand(dw_ud[0, 2]) == expand(
+        1 / (2 * x1) * (2 * x1 - 2 * x2 + x3) * Wedge(K(0), K(2))
+    )
