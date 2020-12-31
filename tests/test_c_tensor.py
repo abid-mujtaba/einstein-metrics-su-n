@@ -12,7 +12,7 @@ import c_tensor as sut
 
 
 def test_coeff_n_equals_2() -> None:
-    """Test _coeff against hand-calculations for n-2."""
+    """Test _coeff against hand-calculations for n=2."""
     # GIVEN
     n = 2
     dK = create_dK(n)
