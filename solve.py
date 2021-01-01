@@ -2,8 +2,8 @@
 
 import sys
 
-from sympy import Eq, N, S, Rational, Symbol, expand
-from sympy.solvers import solve, nonlinsolve, solve_poly_system
+from sympy import Eq, Expr, Mul, N, Pow, Rational, Symbol
+from sympy.solvers import solve_poly_system
 
 from cache import ricci
 from metric import x1, x2, x3
@@ -19,15 +19,27 @@ e_0, e_1, e_2 = ricci[n]
 
 lmbda = Symbol("𝜆", real=True)
 
+# We normalize the results by setting x3=2
+x3_val = 2
+
+def create_equation(expr: Expr, var: Expr) -> Eq:
+    """
+    Create the equation equating expr = lambda * var.
+
+    Substitute for x3 to normalize the metric constants.
+    Cross-multiply the denominator to put all the vars in the numerator.
+    """
+    factor = Mul(*(arg for arg in expr.args if isinstance(arg, Rational) or isinstance(arg, Pow)))
+
+    lhs = (expr / factor).subs({x3: x3_val})
+    rhs = (lmbda * var / factor).subs({x3: x3_val})
+
+    return Eq(lhs, rhs)
+
 # Construct the equations from the defining relation of Einstein metrics:
 # R_ab = lambda * g_ab
-# We normalize the results by setting x3=1
-# We multiply both sides of the equation by the denominator to remove inverse variables
-equations = [
-    Eq(expand(e_0.subs({x3: 1}) * 8 * x1 * x2), lmbda * x1 * 8 * x1 * x2),
-    Eq(expand(e_1.subs({x3: 1}) * 16 * x1 ** 2), lmbda * x2 * 16 * x1 ** 2),
-    Eq(expand(e_2.subs({x3: 1}) * 16 * x1 * x2), lmbda * 16 * x1 * x2),
-]
+equations = [create_equation(e, v) for e, v in zip(ricci[n], (x1, x2, x3))]
+
 
 for eqn in equations:
     print(eqn)
