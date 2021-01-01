@@ -1,6 +1,7 @@
 """Calculate the Riemann Curvature and Ricci tensors."""
 
-from sympy import Array, Expr
+from sympy import Array, Expr, expand, factor
+from sympy.tensor import tensorcontraction as tc
 
 from wedge import extract_wedge_coeff
 
@@ -34,3 +35,14 @@ def create_R_uddd(n: int, theta_ud: Array) -> Array:
             for a in range(dim)
         ]
     )
+
+
+def create_R_dd(R_uddd: Array) -> Array:
+    """
+    Create the Ricci tensor by contracting the Riemann Curvature Tensor.
+
+    R_ab = R^c_acb
+
+    Expand and then factorize the elements to get compact expressions.
+    """
+    return tc(R_uddd, (0, 2)).applyfunc(expand).applyfunc(factor)
