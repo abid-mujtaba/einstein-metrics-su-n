@@ -4,6 +4,7 @@ import pytest
 
 from itertools import combinations, product
 from sympy import Array, expand
+from sympy.abc import a, b
 
 import ricci as sut
 
@@ -80,3 +81,98 @@ def test_create_R_uddd_n_equals_2(n: int, theta_ud: Array) -> None:
         )
         / (8 * x1)
     )
+
+
+@pytest.mark.parametrize("n", (3,))
+def test_create_R_dd(n: int, R_uddd: Array) -> Array:
+    """Test the creation of R_dd tensor."""
+    # GIVEN
+    dim = n ** 2 - 1
+
+    # WHEN
+    R_dd = sut.create_R_dd(R_uddd)
+
+    # THEN
+    for i in range(dim):
+        assert R_dd[i, i]
+
+    for i, j in combinations(range(dim), 2):
+        assert R_dd[i, j] == 0
+        assert R_dd[j, i] == 0
+
+    # Verify that there are only 3 unique entries in the (n**2 - 1) diagonal elements
+    assert len(set(R_dd[i, i] for i in range(dim))) == 3
+
+
+@pytest.mark.parametrize("n", (2,))
+def test_create_R_dd_n_equals_2(R_uddd: Array) -> Array:
+    """Test the creation of R_dd against hand calculations for n=2."""
+    # WHEN
+    R_dd = sut.create_R_dd(R_uddd)
+
+    R_00 = R_dd[0, 0]
+    R_11 = R_dd[1, 1]
+    R_22 = R_dd[2, 2]
+
+    # THEN
+    assert R_dd[0, 1] == 0
+    assert R_dd[0, 2] == 0
+    assert R_dd[1, 0] == 0
+    assert R_dd[1, 2] == 0
+    assert R_dd[2, 0] == 0
+    assert R_dd[2, 1] == 0
+
+    assert expand(R_00) == expand(
+        (
+            (2 * x1 + 2 * x2 - x3)
+            + (2 * x1 - 2 * x2 + x3) * (2 * x1 - 2 * x2 - x3) / (2 * x3)
+        )
+        / (8 * x2)
+        + (
+            (2 * x1 - 2 * x2 + x3)
+            + (2 * x1 - 2 * x2 - x3) * (2 * x1 + 2 * x2 - x3) / (4 * x2)
+        )
+        / (4 * x3)
+    )
+    assert expand(R_11) == expand(
+        (
+            (2 * x1 + 2 * x2 - x3)
+            + (2 * x1 - 2 * x2 + x3) * (2 * x1 - 2 * x2 - x3) / (2 * x3)
+        )
+        / (8 * x1)
+        - (
+            (2 * x1 - 2 * x2 - x3)
+            + (2 * x1 - 2 * x2 + x3) * (2 * x1 + 2 * x2 - x3) / (4 * x1)
+        )
+        / (4 * x3)
+    )
+    assert expand(R_22) == expand(
+        (
+            (2 * x1 - 2 * x2 + x3)
+            + (2 * x1 + 2 * x2 - x3) * (2 * x1 - 2 * x2 - x3) / (4 * x2)
+        )
+        / (4 * x1)
+        - (
+            (2 * x1 - 2 * x2 - x3)
+            + (2 * x1 + 2 * x2 - x3) * (2 * x1 - 2 * x2 + x3) / (4 * x1)
+        )
+        / (4 * x2)
+    )
+
+    # Document the factorized results (partially hand calculated)
+    assert expand(R_00) == expand(
+        (2 * x1 + 2 * x2 - x3) * (2 * x1 - 2 * x2 + x3) / (8 * x2 * x3)
+    )
+    assert expand(R_11) == expand(
+        -1 * (2 * x1 + 2 * x2 - x3) * (2 * x1 - 2 * x2 - x3) / (8 * x1 * x3)
+    )
+    assert expand(R_22) == expand(
+        -1 * (2 * x1 - 2 * x2 - x3) * (2 * x1 - 2 * x2 + x3) / (8 * x1 * x2)
+    )
+
+    # Verify the x1, x2 - exchange symmetry between R_00 and R_11, and
+    # from R_22 to itself
+    assert expand(R_00.subs({x1: a, x2: b}).subs({a: x2, b: x1})) == expand(R_11)
+    assert expand(R_11.subs({x1: a, x2: b}).subs({a: x2, b: x1})) == expand(R_00)
+
+    assert expand(R_22.subs({x1: a, x2: b}).subs({a: x2, b: x1})) == expand(R_22)

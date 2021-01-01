@@ -8,6 +8,7 @@ from c_tensor import create_c_ddd, create_c_ddu
 from differentials import create_dK
 from K_1_forms import create_K_u
 from metric import create_metric
+from ricci import create_R_uddd
 from theta_tensor import create_theta_ud
 from w_tensor import create_w_dd, create_w_ud, create_w_wedge_ud, create_dw_ud
 
@@ -69,3 +70,9 @@ def w_wedge_ud_fixture(n: int, w_ud: Array) -> Array:
 def theta_ud_fixture(n: int, dw_ud: Array, w_wedge_ud: Array) -> Array:
     """Create theta_ud for testing."""
     return create_theta_ud(dw_ud, w_wedge_ud)
+
+
+@pytest.fixture(name="R_uddd")
+def R_uddd_fixture(n: int, theta_ud: Array) -> Array:
+    """Create R_uddd for testing."""
+    return create_R_uddd(n, theta_ud)
