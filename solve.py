@@ -20,7 +20,7 @@ e_0, e_1, e_2 = ricci[n]
 lmbda = Symbol("𝜆", real=True)
 
 # We normalize the results by setting x3=2
-x3_val = 2
+x3_val = 1
 
 def create_equation(expr: Expr, var: Expr) -> Eq:
     """
