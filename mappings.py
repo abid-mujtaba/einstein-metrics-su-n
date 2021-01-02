@@ -1,9 +1,22 @@
 """Construct common matrices for mapping K to L 1-forms and back."""
 
-from sympy import Expr, Integer, Rational
+from sympy import Expr, Integer, Rational, I
 from sympy.functions import sqrt
 from sympy.matrices import Matrix, ones, eye, diag
 from typing import List
+
+
+def create_C_matrix() -> Matrix:
+    """
+    Create a mixing matrix for off-diagonal L 1-forms.
+
+    The goal is for the generated K 1-forms to be both Hermitian and
+    somewhat symmetric in how it mixes the real and imaginary parts.
+    """
+    A = 1 / sqrt(2) * Matrix([[1, 1], [I, -I]])  # Mix L 1-forms in Hermitian fashion
+    B = 1 / sqrt(2) * Matrix([[1, 1], [1, -1]])  # Symmetric mixing of 2 2-vectors
+
+    return B * A
 
 
 def create_P_matrix(n: int) -> Matrix:

@@ -2,11 +2,30 @@
 
 import pytest
 
-from sympy import Rational
+from sympy import Rational, expand
 from sympy.functions import sqrt
 from sympy.matrices import Matrix
 
 import mappings as sut
+
+
+def test_C_matrix() -> None:
+    """Verify that the C mixing matrix is 2x2 and orthonormal."""
+    # WHEN
+    C = sut.create_C_matrix()
+
+    row_0 = C[0, :]
+    row_1 = C[1, :]
+
+    # THEN
+    assert C.shape == (2, 2)
+
+    # Verify that the rows of C are Hermitian othornormal (complex conjugate dot product)
+    assert expand(row_0.H.dot(row_0)) == 1
+    assert expand(row_1.H.dot(row_1)) == 1
+
+    assert expand(row_0.H.dot(row_1)) == 0
+    assert expand(row_1.H.dot(row_0)) == 0
 
 
 def test_P_matrix() -> None:
