@@ -24,6 +24,7 @@ def _create_P_matrix(n: int) -> Matrix:
     Create P matrix used to mix L 1-forms while creating the category 3 K 1-forms.
 
     For N defined equal to (n - 1),
+    Only works for N > 2 (since N = 2 does not mix (zero diagonals))
     the P matrix is block diagonal with a large (n - 1) * (n - 1) first entry
     and a single 1 in the last diagonal element
 
@@ -36,6 +37,8 @@ def _create_P_matrix(n: int) -> Matrix:
     built in matrix utility functions.
     """
     N = n - 1
+    # assert N > 2  # N = 2 does not create the necessary mixing (zero diagonals)
+
     sub_matrix = (Rational(2, N) * ones(N)) - eye(N)
 
     return diag(sub_matrix, 1)
@@ -78,7 +81,14 @@ def _category_3_K2L(n: int) -> Iterator[Expr]:
     # creation of the mapping to K 1-forms
     l = Matrix([[L(i, i) for i in range(n)]]).T
 
-    P = _create_P_matrix(n)
+    # _create_P_matrix only works for N = (n - 1) > 2 so we provide two special cases
+    if n == 2:
+        P = eye(2)
+    if n == 3:
+        P = Matrix([[1, 1, 0], [1, -1, 0], [0, 0, 1]])
+    else:
+        P = _create_P_matrix(n)
+
     Q = _create_Q_matrix(n)
 
     k = P * Q * l
