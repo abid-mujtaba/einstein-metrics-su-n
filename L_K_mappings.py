@@ -10,7 +10,10 @@ from sympy.matrices import Matrix
 from typing import List
 
 from K_1_forms import K
-from mappings import create_P_matrix, create_Q_matrix
+from mappings import create_C_matrix, create_P_matrix, create_Q_matrix
+
+
+C_inv = create_C_matrix().inv()
 
 
 def _index_from_pair(a: int, b: int, n: int) -> int:
@@ -32,7 +35,11 @@ def _L2K_a_less_b(a: int, b: int, n: int) -> Expr:
     i = _index_from_pair(a, b, n)
     j = m + i
 
-    return S.Half * K(i) - I * S.Half * K(j)
+    k = Matrix([K(i), K(j)])
+    l = C_inv * k
+
+    return l[0]
+    # return S.Half * K(i) - I * S.Half * K(j)
 
 
 def _L2K_a_more_b(a: int, b: int, n: int) -> Expr:
@@ -44,7 +51,12 @@ def _L2K_a_more_b(a: int, b: int, n: int) -> Expr:
     # We invert a and b since the same K 1-forms are involved in both L_a^b and L_b^a
     j = m + i
 
-    return S.Half * K(i) + I * S.Half * K(j)
+    k = Matrix([K(i), K(j)])
+    l = C_inv * k
+
+    return l[1]
+
+    # return S.Half * K(i) + I * S.Half * K(j)
 
 
 def _L_diag_mappings(n: int) -> Matrix:

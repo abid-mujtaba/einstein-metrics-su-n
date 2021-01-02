@@ -7,17 +7,29 @@ from sympy.matrices import ones, diag, eye, Matrix
 from typing import Iterator, List
 
 from L_1_forms import L
-from mappings import create_P_matrix, create_Q_matrix
+from mappings import create_C_matrix, create_P_matrix, create_Q_matrix
+
+
+# Create the mixing C matrix
+C = create_C_matrix()
 
 
 def _category_1_K2L(n: int) -> Iterator[Expr]:
-    """First n(n - 1)/2 mappings of the form L_A^B + L^B_A for A != B."""
-    return (L(a, b) + L(b, a) for a, b in itertools.combinations(range(n), 2))
+    """First n(n - 1)/2 mappings using the first row of the C matrix."""
+    for a, b in itertools.combinations(range(n), 2):
+        l = Matrix([L(a, b), L(b, a)])
+        k = C * l
+
+        yield k[0]
 
 
 def _category_2_K2L(n: int) -> Iterator[Expr]:
-    """Second n(n -1)/2 mappings of the form i*(L_A^B - L_B^A) for A != B."""
-    return (I * (L(a, b) - L(b, a)) for a, b in itertools.combinations(range(n), 2))
+    """Second n(n -1)/2 mappings using the second row of the C matrix."""
+    for a, b in itertools.combinations(range(n), 2):
+        l = Matrix([L(a, b), L(b, a)])
+        k = C * l
+
+        yield k[1]
 
 
 def _category_3_K2L(n: int) -> Iterator[Expr]:
