@@ -10,7 +10,7 @@ from sympy.matrices import Matrix
 from typing import List
 
 from K_1_forms import K
-from K_L_mappings import _create_P_matrix, _create_Q_matrix
+from mappings import create_P_matrix, create_Q_matrix
 
 
 def _index_from_pair(a: int, b: int, n: int) -> int:
@@ -49,8 +49,8 @@ def _L2K_a_more_b(a: int, b: int, n: int) -> Expr:
 
 def _L_diag_mappings(n: int) -> Matrix:
     """Generate the mappings for the diagonal L_a^a using the P and Q matrices."""
-    P = _create_P_matrix(n)
-    Q = _create_Q_matrix(n)
+    P = create_P_matrix(n)
+    Q = create_Q_matrix(n)
 
     invP = P.inv()
     invQ = Q.inv()
