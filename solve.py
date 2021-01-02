@@ -22,6 +22,7 @@ lmbda = Symbol("𝜆", real=True)
 # We normalize the results by setting x3=2
 x3_val = 1
 
+
 def create_equation(expr: Expr, var: Expr) -> Eq:
     """
     Create the equation equating expr = lambda * var.
@@ -29,12 +30,15 @@ def create_equation(expr: Expr, var: Expr) -> Eq:
     Substitute for x3 to normalize the metric constants.
     Cross-multiply the denominator to put all the vars in the numerator.
     """
-    factor = Mul(*(arg for arg in expr.args if isinstance(arg, Rational) or isinstance(arg, Pow)))
+    factor = Mul(
+        *(arg for arg in expr.args if isinstance(arg, Rational) or isinstance(arg, Pow))
+    )
 
     lhs = (expr / factor).subs({x3: x3_val})
     rhs = (lmbda * var / factor).subs({x3: x3_val})
 
     return Eq(lhs, rhs)
+
 
 # Construct the equations from the defining relation of Einstein metrics:
 # R_ab = lambda * g_ab

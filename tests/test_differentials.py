@@ -74,7 +74,7 @@ def test_convert_L_2_forms() -> None:
     assert result
 
 
-@pytest.mark.parametrize("n", (3,4))
+@pytest.mark.parametrize("n", (3, 4))
 def test_create_dK(n: int) -> None:
     """Test the creation of the dK expressions."""
     # WHEN
