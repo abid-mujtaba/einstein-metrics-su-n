@@ -1,5 +1,7 @@
 """Test the differentials module."""
 
+import pytest
+
 from L_K_mappings import create_L2K
 from sympy import I, expand, sqrt
 
@@ -72,11 +74,9 @@ def test_convert_L_2_forms() -> None:
     assert result
 
 
-def test_create_dK() -> None:
+@pytest.mark.parametrize("n", (3,4))
+def test_create_dK(n: int) -> None:
     """Test the creation of the dK expressions."""
-    # GIVEN
-    n = 2
-
     # WHEN
     dK = sut.create_dK(n)
 
