@@ -1,7 +1,8 @@
 """Test the c_tensor module."""
 
 from itertools import product
-from sympy import sqrt
+import pytest
+from sympy import expand, sqrt
 from sympy.tensor import permutedims as pd
 
 from differentials import create_dK
@@ -107,10 +108,10 @@ def test_create_c_ddd_n_equals_2() -> None:
     assert c_ddd[0, 1, 1] == 0
 
 
-def test_create_c_ddd() -> None:
+@pytest.mark.parametrize("n", (3, 4))
+def test_create_c_ddd(n: int) -> None:
     """Test the creation of the c_ddd tensor."""
     # GIVEN
-    n = 3
     dim = n ** 2 - 1
     g_dd, _ = create_metric(n)
     dK = create_dK(n)
@@ -126,7 +127,7 @@ def test_create_c_ddd() -> None:
             assert len(set((i, j, k))) == 3  # Unique indices
 
     # Verify that c_ddu is antisymmetric in the first two indices
-    antisymm_sum = c_ddd + pd(c_ddd, (1, 0, 2))
+    antisymm_sum = (c_ddd + pd(c_ddd, (1, 0, 2))).applyfunc(expand)
 
     for i, j, k in product(range(dim), repeat=3):
         assert antisymm_sum[i, j, k] == 0
