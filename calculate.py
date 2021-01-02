@@ -42,7 +42,7 @@ assert len(set(R_dd[i, i] for i in range(dim))) == 3
 
 e_00 = R_dd[0, 0]
 e_11 = R_dd[m, m]
-e_22 = R_dd[2*m, 2*m]
+e_22 = R_dd[2 * m, 2 * m]
 
 print(e_00)
 print(e_11)
