@@ -2,6 +2,7 @@
 
 import pytest
 
+from itertools import product
 from sympy import I, Rational, expand
 from sympy.functions import sqrt
 from sympy.matrices import Matrix
@@ -114,11 +115,9 @@ def test_Q_matrix() -> None:
     assert row_n.dot(row_n) == 1
 
 
-def test_category_3_K2L() -> None:
+@pytest.mark.parametrize("n", (3, 4))
+def test_category_3_K2L(n: int) -> None:
     """Test the creation of the category 3 K2L mappings (uses the P qnd Q matrices)."""
-    # GIVEN
-    n = 4
-
     # WHEN
     K2L = tuple(sut._category_3_K2L(n))
 
@@ -126,7 +125,7 @@ def test_category_3_K2L() -> None:
     assert len(K2L) == n
 
     # Each entry (K 1-form) must have contributions from all the diagonal L 1-forms
-    for i, j in zip(range(n), range(n)):
+    for i, j in product(range(n), repeat=2):
         assert is_in_expr(L(i, i), K2L[j])
 
 
