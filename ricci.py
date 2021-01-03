@@ -60,4 +60,4 @@ def calculate_Riem_2(R_uddd: Array, g_dd: Array, g_uu: Array) -> Expr:
     R_uuud = tc(tp(g_uu, R_uudd), (1, 4))
     R_uuuu = tc(tp(g_uu, R_uuud), (1, 5))
 
-    return tc(tp(R_uuuu, R_dddd), (0,4), (1,5), (2,6), (3,7))
+    return factor(expand(tc(tp(R_uuuu, R_dddd), (0,4), (1,5), (2,6), (3,7))))
