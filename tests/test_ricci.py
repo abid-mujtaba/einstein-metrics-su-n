@@ -176,3 +176,23 @@ def test_create_R_dd_n_equals_2(R_uddd: Array) -> Array:
     assert expand(R_11.subs({x1: a, x2: b}).subs({a: x2, b: x1})) == expand(R_00)
 
     assert expand(R_22.subs({x1: a, x2: b}).subs({a: x2, b: x1})) == expand(R_22)
+
+
+@pytest.mark.parametrize("n", (2,))
+def test_calculate_Riem_2_simple(n: int, g_dd: Array, g_uu: Array) -> None:
+    """Use a simple R_uddd to test calculate_Riem_2."""
+    # GIVEN
+    dim = n ** 2 - 1
+    entries = [[[[0 for _ in range(dim)] for _ in range(dim)] for _ in range(dim)] for _ in range(dim)]
+
+    # We create an R_uddd with only one non-zero entry: first index first entry
+    entries[0][0][0][0] = a
+    R_uddd = Array(entries)
+
+    # WHEN
+    Riem_2 = sut.calculate_Riem_2(R_uddd, g_dd, g_uu)
+
+    # THEN
+    # Because the calculatioin involves one g_dd and three g_uu we have the following
+    # relation:
+    assert Riem_2 == a**2 * x1 * x1 ** (-1)

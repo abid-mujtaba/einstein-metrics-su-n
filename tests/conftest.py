@@ -40,6 +40,14 @@ def w_dd_fixture(c_ddd: Array, K_u: Array) -> Array:
     return create_w_dd(c_ddd, K_u)
 
 
+@pytest.fixture(name="g_dd")
+def g_dd_fixture(n: int) -> Array:
+    """Create the metric tensor."""
+    g_dd, _ = create_metric(n)
+
+    return g_dd
+
+
 @pytest.fixture(name="g_uu")
 def g_uu_fixture(n: int) -> Array:
     """Create the inverse metric tensor."""

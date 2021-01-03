@@ -1,7 +1,7 @@
 """Calculate the Riemann Curvature and Ricci tensors."""
 
 from sympy import Array, Expr, expand, factor
-from sympy.tensor import tensorcontraction as tc
+from sympy.tensor import tensorcontraction as tc, tensorproduct as tp
 
 from wedge import extract_wedge_coeff
 
@@ -46,3 +46,15 @@ def create_R_dd(R_uddd: Array) -> Array:
     Expand and then factorize the elements to get compact expressions.
     """
     return tc(R_uddd, (0, 2)).applyfunc(expand).applyfunc(factor)
+
+
+def calculate_Riem_2(R_uddd: Array, g_dd: Array, g_uu: Array) -> Expr:
+    """
+    Calculate Riem_2 = R_abcd R^abcd (contraction on all indices).
+
+    Several indices will have to be raised and lowered accordingly.
+    """
+    R_dddd = tc(tp(g_dd, R_uddd), (1, 2))
+    R_uuuu = tc(tp(g_uu, g_uu, g_uu, R_uddd), (1,7), (3,8), (5,9))
+
+    return tc(tp(R_uuuu, R_dddd), (0,4), (1,5), (2,6), (3,7))
