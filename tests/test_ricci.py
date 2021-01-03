@@ -195,4 +195,17 @@ def test_calculate_Riem_2_simple(n: int, g_dd: Array, g_uu: Array) -> None:
     # THEN
     # Because the calculatioin involves one g_dd and three g_uu we have the following
     # relation:
-    assert Riem_2 == a**2 * x1 * x1 ** (-1)
+    assert Riem_2 == a**2 * x1 * x1 ** (-3)
+
+
+@pytest.mark.parametrize("n", (2,))
+def test_calculate_Riem_2(n: int, R_uddd: Array, g_dd: Array, g_uu: Array) -> None:
+    """Calculate Riem_2 using the full calculation."""
+    # GIVEN
+    dim = n ** 2 - 1
+
+    # WHEN
+    Riem_2 = sut.calculate_Riem_2(R_uddd, g_dd, g_uu)
+
+    # THEN
+    assert Riem_2

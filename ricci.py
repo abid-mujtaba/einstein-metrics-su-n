@@ -55,6 +55,9 @@ def calculate_Riem_2(R_uddd: Array, g_dd: Array, g_uu: Array) -> Expr:
     Several indices will have to be raised and lowered accordingly.
     """
     R_dddd = tc(tp(g_dd, R_uddd), (1, 2))
-    R_uuuu = tc(tp(g_uu, g_uu, g_uu, R_uddd), (1,7), (3,8), (5,9))
+
+    R_uudd = tc(tp(g_uu, R_uddd), (1, 3))
+    R_uuud = tc(tp(g_uu, R_uudd), (1, 4))
+    R_uuuu = tc(tp(g_uu, R_uuud), (1, 5))
 
     return tc(tp(R_uuuu, R_dddd), (0,4), (1,5), (2,6), (3,7))
