@@ -88,7 +88,7 @@ def calculate_invariant(n, x1_s, x2_s, x3_s, lmbda_s):
     g_dd = g_dd.applyfunc(lambda e: e.subs(subs))
     g_uu = g_uu.applyfunc(lambda e: e.subs(subs))
 
-    Riem_2 = calculate_Riem_2(R_uddd, g_dd, g_uu)
+    Riem_2 = calculate_Riem_2(n, R_uddd, g_dd, g_uu)
 
     return Riem_2 / (lmbda_s**2)
 

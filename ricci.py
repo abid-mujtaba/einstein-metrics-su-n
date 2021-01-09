@@ -1,5 +1,6 @@
 """Calculate the Riemann Curvature and Ricci tensors."""
 
+from itertools import product
 from sympy import Array, Expr, expand, factor
 from sympy.tensor import tensorcontraction as tc, tensorproduct as tp
 
@@ -48,16 +49,20 @@ def create_R_dd(R_uddd: Array) -> Array:
     return tc(R_uddd, (0, 2)).applyfunc(expand).applyfunc(factor)
 
 
-def calculate_Riem_2(R_uddd: Array, g_dd: Array, g_uu: Array) -> Expr:
+def calculate_Riem_2(n: int, R_uddd: Array, g_dd: Array, g_uu: Array) -> Expr:
     """
     Calculate Riem_2 = R_abcd R^abcd (contraction on all indices).
 
     Several indices will have to be raised and lowered accordingly.
     """
+    dim = n ** 2 - 1
+
     R_dddd = tc(tp(g_dd, R_uddd), (1, 2))
 
     R_uudd = tc(tp(g_uu, R_uddd), (1, 3))
     R_uuud = tc(tp(g_uu, R_uudd), (1, 4))
     R_uuuu = tc(tp(g_uu, R_uuud), (1, 5))
 
-    return factor(expand(tc(tp(R_uuuu, R_dddd), (0,4), (1,5), (2,6), (3,7))))
+    # return factor(expand(tc(tp(R_uuuu, R_dddd), (0,4), (1,5), (2,6), (3,7))))
+    return factor(expand(sum(R_uuuu[i,j,k,l] * R_dddd[i,j,k,l] for i, j, k, l in product(range(dim), repeat=4))))
+

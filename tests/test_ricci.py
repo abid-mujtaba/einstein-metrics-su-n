@@ -190,7 +190,7 @@ def test_calculate_Riem_2_simple(n: int, g_dd: Array, g_uu: Array) -> None:
     R_uddd = Array(entries)
 
     # WHEN
-    Riem_2 = sut.calculate_Riem_2(R_uddd, g_dd, g_uu)
+    Riem_2 = sut.calculate_Riem_2(n, R_uddd, g_dd, g_uu)
 
     # THEN
     # Because the calculatioin involves one g_dd and three g_uu we have the following
@@ -201,11 +201,8 @@ def test_calculate_Riem_2_simple(n: int, g_dd: Array, g_uu: Array) -> None:
 @pytest.mark.parametrize("n", (2,))
 def test_calculate_Riem_2(n: int, R_uddd: Array, g_dd: Array, g_uu: Array) -> None:
     """Calculate Riem_2 using the full calculation."""
-    # GIVEN
-    dim = n ** 2 - 1
-
     # WHEN
-    Riem_2 = sut.calculate_Riem_2(R_uddd, g_dd, g_uu)
+    Riem_2 = sut.calculate_Riem_2(n, R_uddd, g_dd, g_uu)
 
     # THEN
     assert Riem_2
